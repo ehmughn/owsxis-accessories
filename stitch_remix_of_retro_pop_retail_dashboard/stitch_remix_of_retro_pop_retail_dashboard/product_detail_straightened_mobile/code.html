@@ -1,0 +1,292 @@
+<!DOCTYPE html><html lang="en" style="width: 390px; height: 1622px; overflow: hidden; position: relative;"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Owsxi - Product Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed": "#ffdad4",
+                      "on-error": "#ffffff",
+                      "tertiary-fixed": "#ffe08b",
+                      "secondary-fixed-dim": "#bfc2ff",
+                      "on-tertiary-fixed": "#241a00",
+                      "surface-variant": "#e5e2de",
+                      "outline": "#8f706b",
+                      "on-primary-fixed-variant": "#930301",
+                      "inverse-primary": "#ffb4a8",
+                      "on-surface": "#1c1c19",
+                      "on-tertiary-fixed-variant": "#584400",
+                      "secondary-fixed": "#e0e0ff",
+                      "secondary-container": "#b5b9fe",
+                      "background": "#fdf9f5",
+                      "outline-variant": "#e3beb8",
+                      "secondary": "#555997",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-fixed": "#0f1250",
+                      "on-surface-variant": "#5b403c",
+                      "error-container": "#ffdad6",
+                      "on-primary": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "on-tertiary-container": "#4f3d00",
+                      "on-error-container": "#93000a",
+                      "on-primary-fixed": "#410000",
+                      "on-secondary-fixed-variant": "#3d417e",
+                      "error": "#ba1a1a",
+                      "primary": "#660000",
+                      "inverse-on-surface": "#f4f0ec",
+                      "surface-container-low": "#f7f3ef",
+                      "on-secondary-container": "#434784",
+                      "primary-container": "#900000",
+                      "tertiary": "#745b00",
+                      "on-primary-container": "#ff9686",
+                      "surface-container-high": "#ebe7e4",
+                      "on-secondary": "#ffffff",
+                      "surface-container": "#f1ede9",
+                      "inverse-surface": "#31302e",
+                      "surface-bright": "#fdf9f5",
+                      "surface-container-highest": "#e5e2de",
+                      "surface": "#fdf9f5",
+                      "surface-tint": "#b62417",
+                      "surface-dim": "#ddd9d6",
+                      "tertiary-container": "#d0a602",
+                      "primary-fixed-dim": "#ffb4a8",
+                      "on-background": "#1c1c19",
+                      "tertiary-fixed-dim": "#eec12d"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0px",
+                      "lg": "0px",
+                      "xl": "0px",
+                      "full": "0px"
+              },
+              "spacing": {
+                      "md": "24px",
+                      "margin-desktop": "64px",
+                      "base": "8px",
+                      "xs": "4px",
+                      "xl": "80px",
+                      "gutter": "24px",
+                      "lg": "48px",
+                      "sm": "12px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "body-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "display-lg": [
+                              "Bricolage Grotesque"
+                      ],
+                      "label-bold": [
+                              "Space Grotesk"
+                      ],
+                      "headline-lg-mobile": [
+                              "Bricolage Grotesque"
+                      ],
+                      "label-sm": [
+                              "Space Grotesk"
+                      ],
+                      "headline-md": [
+                              "Bricolage Grotesque"
+                      ],
+                      "headline-lg": [
+                              "Bricolage Grotesque"
+                      ]
+              },
+              "fontSize": {
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "64px",
+                              {
+                                      "lineHeight": "72px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "label-bold": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "38px",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "40px",
+                              {
+                                      "lineHeight": "48px",
+                                      "fontWeight": "800"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        .hard-shadow-gold { box-shadow: 4px 4px 0px 0px #d0a602; }
+        .hard-shadow-red { box-shadow: 4px 4px 0px 0px #900000; }
+        .hard-shadow-navy { box-shadow: 4px 4px 0px 0px #0f1250; }
+        .hard-shadow-interactive:active { transform: translate(4px, 4px); box-shadow: none; }
+        
+        .sticker-border {
+            border: 3px solid #0f1250;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-[80px]">
+<!-- TopAppBar -->
+<header class="sticky top-0 w-full z-50 flex justify-between items-center px-margin-mobile py-sm bg-background dark:bg-surface border-b-4 border-on-secondary-fixed shadow-[4px_4px_0px_0px_#d0a602]">
+<button class="text-primary dark:text-primary-fixed hover:bg-tertiary-container hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:translate-x-[4px] active:translate-y-[4px] active:shadow-none">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-display-lg text-headline-lg-mobile font-black tracking-tighter text-primary dark:text-primary-fixed">OWSXI</h1>
+<button class="font-headline-md text-headline-md uppercase text-primary dark:text-primary-fixed hover:bg-tertiary-container hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:translate-x-[4px] active:translate-y-[4px] active:shadow-none">
+            BAG
+        </button>
+</header>
+<!-- Main Content -->
+<main class="p-margin-mobile flex flex-col gap-md">
+<!-- Product Image Gallery -->
+<section class="flex flex-col gap-sm">
+<div class="sticker-border bg-white hard-shadow-navy overflow-hidden">
+<img class="w-full aspect-square object-cover" data-alt="A highly detailed close-up of a holographic sticker featuring the Owsxi brand logo. The sticker has a glossy, iridescent finish reflecting rainbow colors under harsh, direct studio lighting. The background is a stark, solid white, emphasizing the brutalist, 90s retro-pop aesthetic with high contrast and sharp edges." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcnwM1Bk3l-XchT6vPNA31i2CtadHQx4pb-IKNm3A-zfxoQJNXum5h2-HEmYHJNXtZEAPRigFu7JAcjL01UEJAaVG_lsil-CBl6hCOCk3DjHODabNnj5SHlxWwYIz2toNL3vi5KVgS6_b-bKWGJRSTZuUcWDC_Sesy_l897TJFtWBToF0TJ1tx8ho-V3twIPY7_bcsnLaMWhlcQbDtdERAf9Adq0xCsG7bXxc3Eopg_kFcRef17x4x">
+</div>
+<div class="flex gap-sm overflow-x-auto pb-sm snap-x">
+<div class="sticker-border bg-white w-24 h-24 flex-shrink-0 snap-start">
+<img class="w-full h-full object-cover" data-alt="Thumbnail image showing a side angle of the holographic sticker, highlighting its thickness and glossy texture. The lighting is bright and directional, casting a sharp shadow. The style remains high-contrast, brutalist product photography on a white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCM3dJhy5mpGSP5fyTaJc6op-vWTNJawX2cT_CezodGiPLFunP5UWdGcZncFy1nGjjtHk7vzAsLDNHHYxOVed3Ga8rX-SLtZV2Qjy4xWsR95GFJ3udD04ZbF3NEkJ6pEyhiUQNBF_kXrEPDKkPViqd-ywHINc5Y7uUwpkQ93EG7xwWG82J9BBv6rpUwQERzWs9Z_JNVfnn9jRi3ydZkaS7Biv-rnc6Ejmtl01B_Wn5cfkKl8LGJcvD2">
+</div>
+<div class="sticker-border bg-white w-24 h-24 flex-shrink-0 snap-start opacity-70">
+<img class="w-full h-full object-cover" data-alt="Thumbnail image of the sticker applied to a textured, dark metallic surface, like a laptop lid or street pole. The contrast between the vibrant sticker and the dark, gritty background emphasizes the indie-sleaze, urban aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWF-fY0G5uEdrAZjGu8x9PTB8qw_BokbzmzkQ3AvogGj6LRLsHfb74hwKesfwsLIJ73hcpJHNFwfKXRTVEHNiDGZVv8xzAfJ6I4U8EwPJdVZu0KDbsB5S-yk9cCi5dp5cyRez7ELVvse5QUxHpn8GmlcUjWEWRLmC9obNdp6ZOmnSPlYN_66ccY4srFQs12wi7WMtkl1zuCSv_bTrWhwTS8AULP8-r_NNgUwO_8JaqgU7HPCk4ghUy">
+</div>
+<div class="sticker-border bg-white w-24 h-24 flex-shrink-0 snap-start opacity-70">
+<img class="w-full h-full object-cover" data-alt="Thumbnail image showing multiple identical Owsxi stickers scattered chaotically on a table. The composition is messy and energetic, reflecting the brand's loud, rebellious 90s retro-pop vibe with harsh lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeIelZpTNqbaxMRz-OawtKuSFGN1QEx_LLB-h8elrr8Lc0T-ffHeyzmtqc45a6dqf6horJgmxk_8htO1VHVfAKKnggnWxJZTkik0i_kO71lrhQdF8BAhQqwxLaDeA0RcYVb4SJurcaiUifRfQbzVb_1NWQaqLrQs9tQvK9_sQ9JKAvcMRCtbwTnkRGBA-jshkrAsn1AaVSOQRrsZhpQ0Hw3SUmXK9lkC8NBJ7FOY612Wbl68mOJxoY">
+</div>
+</div>
+</section>
+<!-- Product Details -->
+<section class="flex flex-col gap-sm">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-xs">
+<span class="inline-block bg-tertiary-container text-on-tertiary-container font-label-bold text-label-bold uppercase px-sm py-xs sticker-border w-fit hard-shadow-navy">
+                        Bestseller
+                    </span>
+<h2 class="font-headline-md text-headline-md text-on-surface uppercase mt-2">Owsxi Core Logo Die-Cut</h2>
+</div>
+<span class="font-display-lg text-headline-md text-primary-container">$4.00</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                The original. Heavy-duty vinyl, weather-proof, and designed to withstand the apocalypse (or at least your water bottle). Stick it anywhere.
+            </p>
+</section>
+<!-- Options: Finish -->
+
+<!-- Features -->
+<section class="grid grid-cols-2 gap-sm mt-sm">
+<div class="sticker-border bg-surface-variant flex flex-col items-center justify-center p-sm gap-xs hard-shadow-navy">
+<span class="material-symbols-outlined text-primary-container" data-icon="water_drop" style="font-size: 32px;">water_drop</span>
+<span class="font-label-bold text-label-sm uppercase text-center">Waterproof</span>
+</div>
+<div class="sticker-border bg-surface-variant flex flex-col items-center justify-center p-sm gap-xs hard-shadow-navy">
+<span class="material-symbols-outlined text-primary-container" data-icon="sunny" style="font-size: 32px;">sunny</span>
+<span class="font-label-bold text-label-sm uppercase text-center">UV Resistant</span>
+</div>
+</section>
+<!-- CTA -->
+<section class="mt-md">
+<button class="w-full sticker-border bg-primary-container text-white font-headline-md text-headline-md uppercase py-md hard-shadow-gold hard-shadow-interactive transition-transform flex items-center justify-center gap-sm">
+<span class="">Add to Cart</span>
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</section>
+<!-- You Might Also Like -->
+<section class="mt-xl flex flex-col gap-sm">
+<h3 class="font-headline-md text-headline-md uppercase border-b-4 border-on-secondary-fixed pb-xs">You Might Also Like</h3>
+<div class="flex gap-sm overflow-x-auto pb-sm snap-x">
+<!-- Related Product 1 -->
+<div class="sticker-border bg-white min-w-[200px] flex-shrink-0 hard-shadow-navy snap-start flex flex-col">
+<div class="h-32 bg-secondary-fixed border-b-3 border-on-secondary-fixed">
+<img class="w-full h-full object-cover" data-alt="A brightly lit, brutalist product photo of a small, rectangular woven brand patch featuring the text 'STREET' in bold red letters against a white background with navy borders. High contrast, sharp edges." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaqsaUqU_gBsOMZnvAOZcgzUbvOoSbjIWad1VZC9sCxkL-jpZ74bEJAFFTvdOJBEwUN59OVTHEjSolSckJxCt_xwYW5i9HJllm9AJsE3DFJnDAwTIzYD7kZd1RJSX3rMPBdmP0NA_KeYKbA4uv-eZg0Rk9xa58dVRwmf0bbgnu2_OTJdxLKH-oMXSTFlGNbj2hvGsX4Us9Iy7qjEB_f0Wf6zTtj0Mbmq1rEEkVhsLwaLkMAQvAwSMT">
+</div>
+<div class="p-sm flex flex-col gap-xs flex-grow justify-between">
+<span class="font-label-bold text-label-bold uppercase">Street Patch</span>
+<span class="font-headline-md text-body-lg font-bold">$6.00</span>
+</div>
+</div>
+<!-- Related Product 2 -->
+<div class="sticker-border bg-white min-w-[200px] flex-shrink-0 hard-shadow-navy snap-start flex flex-col">
+<div class="h-32 bg-tertiary-fixed border-b-3 border-on-secondary-fixed">
+<img class="w-full h-full object-cover" data-alt="A brightly lit, brutalist product photo of a round, metallic enamel pin featuring a chaotic, abstract smiley face design in neon colors. High contrast, sharp edges, harsh studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVg0a8z6GQmuRVpkFyx221i-e61YFRU2CmrWM575oHUKeWn2b8tBQX6ZVhWiA8E6GhqzSpccFP3aYxmQYCkUQrSz49KQGI-9a1tQuFxunD6dzkK5Pwt5oRufmeNUUW3LNBNWHJKZJikGSdOpPQ47zut-PWKbS_ERRjOBLUSCqcH910xEwFZ3vwCthJXAJUROM6Sn4y7yXFMDqUvZ3uSYN56OAPtW3aaSilHEmOKK1Cdv9FxJ9o4KKk">
+</div>
+<div class="p-sm flex flex-col gap-xs flex-grow justify-between">
+<span class="font-label-bold text-label-bold uppercase">Chaos Pin</span>
+<span class="font-headline-md text-body-lg font-bold">$8.00</span>
+</div>
+</div>
+<!-- Related Product 3 -->
+<div class="sticker-border bg-white min-w-[200px] flex-shrink-0 hard-shadow-navy snap-start flex flex-col">
+<div class="h-32 bg-error-container border-b-3 border-on-secondary-fixed">
+<img class="w-full h-full object-cover" data-alt="A brightly lit, brutalist product photo of a thick, woven lanyard with repeating brand logos in black and white. High contrast, sharp edges, harsh studio lighting highlighting the fabric texture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi5Sm4abb8ElzvHLAFnTSL2XRW7itaYSjGplH7xRPAzj0TJoaM5tgf1EzSfKVmL-0NpM2eOeDriFgS5LfaNqx7ia5tAtrDXcNMr644OmB68x19ngrna2XbGQ1BBuqanUF9ZJQAlMsvCE-dMZMbNPArhJvpNsDCyWFuWrfxZIt_6rEvEcyVlm6egjgICtoSRyJfpp-o6rtGpdSE7W5hrOTXmEbWKSb3r-wMku4V4G2EuKPfhBnWEK3l">
+</div>
+<div class="p-sm flex flex-col gap-xs flex-grow justify-between">
+<span class="font-label-bold text-label-bold uppercase">Logo Lanyard</span>
+<span class="font-headline-md text-body-lg font-bold">$12.00</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-background dark:bg-surface pb-safe border-t-4 border-on-secondary-fixed shadow-[0px_-4px_0px_0px_#555997]"><a class="flex flex-col items-center justify-center text-on-surface-variant p-xs w-full h-full py-sm hover:bg-secondary-container transition-colors active:scale-95 transition-transform border-x-2 border-transparent hover:border-on-secondary-fixed" href="#"><span class="material-symbols-outlined" data-icon="home">home</span><span class="font-label-bold text-label-bold uppercase mt-1">HOME</span></a><a class="flex flex-col items-center justify-center bg-tertiary-container text-on-tertiary-container border-2 border-on-secondary-fixed p-xs w-full h-full py-sm hover:bg-secondary-container transition-colors active:scale-95 transition-transform" href="#"><span class="material-symbols-outlined" data-icon="storefront">storefront</span><span class="font-label-bold text-label-bold uppercase mt-1">SHOP</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant p-xs w-full h-full py-sm hover:bg-secondary-container transition-colors active:scale-95 transition-transform border-r-2 border-transparent hover:border-on-secondary-fixed" href="#"><span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span><span class="font-label-bold text-label-bold uppercase mt-1">CART</span></a><a class="flex flex-col items-center justify-center text-on-surface-variant p-xs w-full h-full py-sm hover:bg-secondary-container transition-colors active:scale-95 transition-transform border-r-2 border-transparent hover:border-on-secondary-fixed" href="#"><span class="material-symbols-outlined" data-icon="person">person</span><span class="font-label-bold text-label-bold uppercase mt-1">ACCOUNT</span></a></nav>
+
+
+<div id="snapdom-sandbox" data-snapdom-sandbox="true" aria-hidden="true" style="position: absolute; left: -9999px; top: -9999px; width: 0px; height: 0px; overflow: hidden;"></div>
+
+
+
+
+
+</body></html>

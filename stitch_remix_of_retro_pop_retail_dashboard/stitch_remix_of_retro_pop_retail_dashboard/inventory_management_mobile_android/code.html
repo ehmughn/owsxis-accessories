@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>OWSXI ADMIN - Inventory</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400..800&amp;family=Hanken+Grotesk:wght@400..700&amp;family=Space+Grotesk:wght@400..700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#4f3d00",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#d0a602",
+                        "tertiary-fixed": "#ffe08b",
+                        "on-surface-variant": "#5b403c",
+                        "primary-fixed": "#ffdad4",
+                        "inverse-on-surface": "#f4f0ec",
+                        "surface-variant": "#e5e2de",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#555997",
+                        "on-error-container": "#93000a",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#ebe7e4",
+                        "primary-container": "#900000",
+                        "secondary-fixed-dim": "#bfc2ff",
+                        "on-primary-fixed-variant": "#930301",
+                        "surface-container": "#f1ede9",
+                        "on-primary-container": "#ff9686",
+                        "secondary-container": "#b5b9fe",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f7f3ef",
+                        "on-secondary-fixed-variant": "#3d417e",
+                        "primary": "#660000",
+                        "secondary-fixed": "#e0e0ff",
+                        "surface-container-highest": "#e5e2de",
+                        "background": "#fdf9f5",
+                        "outline-variant": "#e3beb8",
+                        "on-background": "#1c1c19",
+                        "surface-bright": "#fdf9f5",
+                        "on-secondary-container": "#434784",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed": "#410000",
+                        "inverse-surface": "#31302e",
+                        "on-error": "#ffffff",
+                        "tertiary": "#745b00",
+                        "surface": "#fdf9f5",
+                        "on-tertiary-fixed-variant": "#584400",
+                        "on-tertiary-fixed": "#241a00",
+                        "surface-dim": "#ddd9d6",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "on-secondary-fixed": "#0f1250",
+                        "tertiary-fixed-dim": "#eec12d",
+                        "on-surface": "#1c1c19",
+                        "inverse-primary": "#ffb4a8",
+                        "surface-tint": "#b62417",
+                        "on-secondary": "#ffffff",
+                        "outline": "#8f706b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "80px",
+                        "xs": "4px",
+                        "md": "24px",
+                        "margin-desktop": "64px",
+                        "base": "8px",
+                        "sm": "12px",
+                        "lg": "48px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Bricolage Grotesque"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "display-lg": ["Bricolage Grotesque"],
+                        "headline-lg": ["Bricolage Grotesque"],
+                        "label-sm": ["Space Grotesk"],
+                        "label-bold": ["Space Grotesk"],
+                        "headline-md": ["Bricolage Grotesque"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "38px", "fontWeight": "800" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg": ["64px", { "lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg": ["40px", { "lineHeight": "48px", "fontWeight": "800" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "label-bold": ["14px", { "lineHeight": "20px", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .hard-shadow { box-shadow: 4px 4px 0px 0px #0f1250; }
+        .hard-shadow-gold { box-shadow: 4px 4px 0px 0px #d0a602; }
+        .hard-shadow-red { box-shadow: 4px 4px 0px 0px #900000; }
+        .interactive-shadow:active { transform: translate(4px, 4px); box-shadow: none; }
+        
+        /* Grid pattern background */
+        .bg-grid {
+            background-image: 
+                linear-gradient(to right, rgba(15, 18, 80, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(15, 18, 80, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* Material Symbols Fill */
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md bg-grid min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-margin-mobile py-sm sticky top-0 z-50 bg-background border-b-[4px] border-secondary shadow-[4px_4px_0px_0px_#d0a602]">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="menu">menu</span>
+<h1 class="font-headline-md text-headline-md font-black tracking-tighter text-primary">OWSXI ADMIN</h1>
+</div>
+<div class="w-10 h-10 border-[3px] border-secondary bg-tertiary-container flex items-center justify-center font-label-bold text-on-tertiary-container">
+            A
+        </div>
+</header>
+<!-- Main Content -->
+<main class="px-margin-mobile py-md flex flex-col gap-md">
+<!-- Header & Action -->
+<div class="flex flex-col gap-sm">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary-container">Inventory</h2>
+<button class="w-full bg-primary-container text-on-primary border-[3px] border-on-secondary-fixed hard-shadow-red interactive-shadow py-sm font-label-bold flex items-center justify-center gap-xs transition-all">
+<span class="material-symbols-outlined">add_circle</span>
+                ADD NEW PRODUCT
+            </button>
+</div>
+<!-- Search & Filters (Sticker Slap Style) -->
+<div class="bg-surface-container border-[3px] border-on-secondary-fixed hard-shadow p-sm flex flex-col gap-sm transform relative z-10">
+<div class="flex items-center border-[3px] border-on-secondary-fixed bg-surface-container-lowest px-sm py-xs">
+<span class="material-symbols-outlined text-on-surface-variant">search</span>
+<input class="w-full bg-transparent border-none focus:ring-0 font-body-md placeholder:text-on-surface-variant/50" placeholder="Search SKU or Name..." type="text">
+</div>
+<div class="flex gap-sm">
+<select class="w-1/2 border-[3px] border-on-secondary-fixed bg-surface-container-lowest py-xs px-sm font-label-bold text-sm focus:ring-0">
+<option>All Categories</option>
+<option>Apparel</option>
+<option>Hardware</option>
+</select>
+<select class="w-1/2 border-[3px] border-on-secondary-fixed bg-surface-container-lowest py-xs px-sm font-label-bold text-sm focus:ring-0">
+<option>Stock: All</option>
+<option>In Stock</option>
+<option>Low Stock</option>
+<option>Out of Stock</option>
+</select>
+</div>
+</div>
+<!-- Product List (Vertical Stack) -->
+<div class="flex flex-col gap-md">
+<!-- Product Card 1 (Low Stock) -->
+<article class="bg-surface-container-lowest border-[3px] border-on-secondary-fixed hard-shadow flex flex-col relative overflow-hidden group">
+<div class="absolute top-sm right-sm bg-tertiary-container text-on-tertiary-container font-label-bold text-xs px-xs py-1 border-[2px] border-on-secondary-fixed transform z-10">
+                    LOW STOCK (3)
+                </div>
+<div class="h-32 bg-secondary-fixed-dim border-b-[3px] border-on-secondary-fixed relative">
+<img alt="Placeholder image for an industrial-style physical product, like a heavy-duty carabiner or utility tool, isolated on a bright background. Highly detailed, raw texture, sharp focus, vibrant pop-art lighting, 90s aesthetic." class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLvZvvy1cMNK_lnDYCGlRjl6mr1544dOl3xbuo49Ze_lQDx2OXUnqObMXtDPkGyY-yShCKne3t8F-PFR4gxDaSU3aw3NnR6DqyqgCafaZkJs9jdu6kzZ4EfVweVRkSEOmSizDcg5rn-5m7uQITlFPw_1JHCzEsP4nVSukgxvOEI2-wwygHggL0tKVZSdiF8iqBzXRPQlAnfovLWxAc10DB5Y02NSCZNIoXUVyc_mQA7RC1xtiuVjpmdfHRWvu-EcbRCT6lSxRSYblQ">
+</div>
+<div class="p-sm flex flex-col gap-xs">
+<div class="flex justify-between items-start">
+<h3 class="font-label-bold text-lg leading-tight uppercase">Industrial Snap Hook</h3>
+<span class="font-label-bold text-primary-container">$24.00</span>
+</div>
+<p class="font-label-sm text-on-surface-variant">SKU: IND-SH-001</p>
+<div class="flex gap-xs mt-sm">
+<button class="flex-1 border-[3px] border-on-secondary-fixed bg-surface-container hover:bg-surface-container-high py-1 font-label-bold text-sm interactive-shadow flex items-center justify-center gap-1 transition-all">
+<span class="material-symbols-outlined text-sm">edit</span> Edit
+                        </button>
+</div>
+</div>
+</article>
+<!-- Product Card 2 (In Stock) -->
+<article class="bg-surface-container-lowest border-[3px] border-on-secondary-fixed hard-shadow flex flex-col relative overflow-hidden">
+<div class="absolute top-sm right-sm bg-secondary-container text-on-secondary-container font-label-bold text-xs px-xs py-1 border-[2px] border-on-secondary-fixed transform z-10">
+                    IN STOCK (42)
+                </div>
+<div class="h-32 bg-secondary-fixed-dim border-b-[3px] border-on-secondary-fixed bg-grid"></div>
+<div class="p-sm flex flex-col gap-xs">
+<div class="flex justify-between items-start">
+<h3 class="font-label-bold text-lg leading-tight uppercase">Utility Carabiner</h3>
+<span class="font-label-bold text-primary-container">$18.50</span>
+</div>
+<p class="font-label-sm text-on-surface-variant">SKU: UTL-CB-099</p>
+<div class="flex gap-xs mt-sm">
+<button class="flex-1 border-[3px] border-on-secondary-fixed bg-surface-container hover:bg-surface-container-high py-1 font-label-bold text-sm interactive-shadow flex items-center justify-center gap-1 transition-all">
+<span class="material-symbols-outlined text-sm">edit</span> Edit
+                        </button>
+</div>
+</div>
+</article>
+<!-- Product Card 3 (Out of Stock) -->
+<article class="bg-surface-container-lowest border-[3px] border-on-secondary-fixed hard-shadow flex flex-col relative overflow-hidden opacity-75">
+<div class="absolute top-sm right-sm bg-error text-on-error font-label-bold text-xs px-xs py-1 border-[2px] border-on-secondary-fixed transform z-10">
+                    OUT OF STOCK
+                </div>
+<div class="h-32 bg-surface-variant border-b-[3px] border-on-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-4xl opacity-50">block</span>
+</div>
+<div class="p-sm flex flex-col gap-xs">
+<div class="flex justify-between items-start">
+<h3 class="font-label-bold text-lg leading-tight uppercase line-through decoration-2">Heavy Duty Rig</h3>
+<span class="font-label-bold text-on-surface-variant">$85.00</span>
+</div>
+<p class="font-label-sm text-on-surface-variant">SKU: HDR-004</p>
+<div class="flex gap-xs mt-sm">
+<button class="flex-1 border-[3px] border-on-secondary-fixed bg-surface-container hover:bg-surface-container-high py-1 font-label-bold text-sm interactive-shadow flex items-center justify-center gap-1 transition-all">
+<span class="material-symbols-outlined text-sm">edit</span> Edit
+                        </button>
+</div>
+</div>
+</article>
+</div>
+<!-- Pagination -->
+<div class="flex justify-center gap-sm mt-sm">
+<button class="w-10 h-10 border-[3px] border-on-secondary-fixed bg-surface-container-lowest hard-shadow interactive-shadow flex items-center justify-center transition-all disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 border-[3px] border-on-secondary-fixed bg-tertiary-container text-on-tertiary-container hard-shadow interactive-shadow font-label-bold flex items-center justify-center transition-all">
+                1
+            </button>
+<button class="w-10 h-10 border-[3px] border-on-secondary-fixed bg-surface-container-lowest hard-shadow interactive-shadow font-label-bold flex items-center justify-center transition-all">
+                2
+            </button>
+<button class="w-10 h-10 border-[3px] border-on-secondary-fixed bg-surface-container-lowest hard-shadow interactive-shadow flex items-center justify-center transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin-mobile py-sm bg-background border-t-[4px] border-secondary shadow-[0px_-4px_0px_0px_#d0a602] pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-xs hover:bg-surface-container-high active:scale-95 transition-transform w-16" href="#">
+<span class="material-symbols-outlined mb-1">dashboard</span>
+<span class="font-label-bold text-[10px] truncate w-full text-center">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-tertiary-container text-on-tertiary-container border-[3px] border-secondary shadow-[2px_2px_0px_0px_#0f1250] p-xs active:scale-95 transition-transform w-16" href="#">
+<span class="material-symbols-outlined mb-1" data-weight="fill">inventory_2</span>
+<span class="font-label-bold text-[10px] truncate w-full text-center">Inventory</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-xs hover:bg-surface-container-high active:scale-95 transition-transform w-16" href="#">
+<span class="material-symbols-outlined mb-1">shopping_cart</span>
+<span class="font-label-bold text-[10px] truncate w-full text-center">Orders</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-xs hover:bg-surface-container-high active:scale-95 transition-transform w-16" href="#">
+<span class="material-symbols-outlined mb-1">group</span>
+<span class="font-label-bold text-[10px] truncate w-full text-center">Customers</span>
+</a>
+</nav>
+
+
+</body></html>

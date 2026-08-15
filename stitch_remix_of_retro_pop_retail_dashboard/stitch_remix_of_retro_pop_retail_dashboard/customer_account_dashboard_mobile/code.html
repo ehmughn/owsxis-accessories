@@ -1,0 +1,318 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Customer Account Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&amp;family=Space+Grotesk:wght@300..700&amp;family=Hanken+Grotesk:wght@300..900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "tertiary-fixed": "#ffe08b",
+                  "error-container": "#ffdad6",
+                  "on-tertiary-fixed-variant": "#584400",
+                  "surface-container-low": "#f7f3ef",
+                  "on-secondary-fixed": "#0f1250",
+                  "surface-tint": "#b62417",
+                  "on-surface-variant": "#5b403c",
+                  "tertiary-fixed-dim": "#eec12d",
+                  "background": "#fdf9f5",
+                  "secondary": "#555997",
+                  "primary": "#660000",
+                  "on-secondary": "#ffffff",
+                  "surface-variant": "#e5e2de",
+                  "on-primary-fixed-variant": "#930301",
+                  "on-primary-container": "#ff9686",
+                  "secondary-container": "#b5b9fe",
+                  "on-secondary-container": "#434784",
+                  "secondary-fixed-dim": "#bfc2ff",
+                  "on-tertiary-container": "#4f3d00",
+                  "surface-container-lowest": "#ffffff",
+                  "outline-variant": "#e3beb8",
+                  "on-tertiary-fixed": "#241a00",
+                  "primary-fixed-dim": "#ffb4a8",
+                  "secondary-fixed": "#e0e0ff",
+                  "on-tertiary": "#ffffff",
+                  "outline": "#8f706b",
+                  "surface-container-high": "#ebe7e4",
+                  "surface-bright": "#fdf9f5",
+                  "error": "#ba1a1a",
+                  "on-secondary-fixed-variant": "#3d417e",
+                  "on-background": "#1c1c19",
+                  "surface-container-highest": "#e5e2de",
+                  "on-surface": "#1c1c19",
+                  "inverse-surface": "#31302e",
+                  "surface": "#fdf9f5",
+                  "primary-fixed": "#ffdad4",
+                  "on-primary-fixed": "#410000",
+                  "tertiary-container": "#d0a602",
+                  "primary-container": "#900000",
+                  "tertiary": "#745b00",
+                  "on-error": "#ffffff",
+                  "inverse-on-surface": "#f4f0ec",
+                  "on-primary": "#ffffff",
+                  "surface-container": "#f1ede9",
+                  "on-error-container": "#93000a",
+                  "inverse-primary": "#ffb4a8",
+                  "surface-dim": "#ddd9d6"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.125rem",
+                  "lg": "0.25rem",
+                  "xl": "0.5rem",
+                  "full": "0.75rem"
+          },
+          "spacing": {
+                  "lg": "48px",
+                  "sm": "12px",
+                  "md": "24px",
+                  "xs": "4px",
+                  "gutter": "24px",
+                  "margin-desktop": "64px",
+                  "margin-mobile": "16px",
+                  "xl": "80px",
+                  "base": "8px"
+          },
+          "fontFamily": {
+                  "headline-md": [
+                          "Bricolage Grotesque"
+                  ],
+                  "label-bold": [
+                          "Space Grotesk"
+                  ],
+                  "headline-lg-mobile": [
+                          "Bricolage Grotesque"
+                  ],
+                  "label-sm": [
+                          "Space Grotesk"
+                  ],
+                  "display-lg": [
+                          "Bricolage Grotesque"
+                  ],
+                  "headline-lg": [
+                          "Bricolage Grotesque"
+                  ],
+                  "body-lg": [
+                          "Hanken Grotesk"
+                  ],
+                  "body-md": [
+                          "Hanken Grotesk"
+                  ]
+          },
+          "fontSize": {
+                  "headline-md": [
+                          "24px",
+                          {
+                                  "lineHeight": "32px",
+                                  "fontWeight": "700"
+                          }
+                  ],
+                  "label-bold": [
+                          "14px",
+                          {
+                                  "lineHeight": "20px",
+                                  "fontWeight": "700"
+                          }
+                  ],
+                  "headline-lg-mobile": [
+                          "32px",
+                          {
+                                  "lineHeight": "38px",
+                                  "fontWeight": "800"
+                          }
+                  ],
+                  "label-sm": [
+                          "12px",
+                          {
+                                  "lineHeight": "16px",
+                                  "fontWeight": "500"
+                          }
+                  ],
+                  "display-lg": [
+                          "64px",
+                          {
+                                  "lineHeight": "72px",
+                                  "letterSpacing": "-0.02em",
+                                  "fontWeight": "800"
+                          }
+                  ],
+                  "headline-lg": [
+                          "40px",
+                          {
+                                  "lineHeight": "48px",
+                                  "fontWeight": "800"
+                          }
+                  ],
+                  "body-lg": [
+                          "18px",
+                          {
+                                  "lineHeight": "28px",
+                                  "fontWeight": "400"
+                          }
+                  ],
+                  "body-md": [
+                          "16px",
+                          {
+                                  "lineHeight": "24px",
+                                  "fontWeight": "400"
+                          }
+                  ]
+          }
+        },
+      }
+    }
+  </script>
+<style>
+    body {
+      background-image: 
+        linear-gradient(to right, rgba(15, 18, 80, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(15, 18, 80, 0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    
+    .hard-shadow {
+      box-shadow: 4px 4px 0px 0px #0f1250;
+    }
+    .hard-shadow-gold {
+      box-shadow: 4px 4px 0px 0px #d0a602;
+    }
+    .hard-shadow-red {
+      box-shadow: 4px 4px 0px 0px #900000;
+    }
+    
+    .interactive-element:active {
+      transform: translate(4px, 4px);
+      box-shadow: none !important;
+    }
+    
+    .brutalist-border {
+      border: 3px solid #0f1250;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-50 bg-background border-b-4 border-on-secondary-fixed shadow-[0_4px_0_0_#b5b9fe] flex justify-center items-center px-margin-mobile h-16">
+<div class="font-headline-lg-mobile text-headline-lg-mobile font-black tracking-tighter text-primary">OWSXI</div>
+</header>
+<main class="px-margin-mobile pt-md flex flex-col gap-lg max-w-[1200px] mx-auto">
+<!-- Header Profile -->
+<section class="flex flex-col items-center justify-center text-center">
+<div class="w-24 h-24 rounded-full border-4 border-[#0f1250] bg-surface-container-high flex items-center justify-center mb-sm shadow-[4px_4px_0_0_#d0a602]">
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">A</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface uppercase tracking-tight">Hi, Alex!</h1>
+<p class="font-label-bold text-label-bold text-on-surface-variant uppercase mt-xs">Sticker Collector</p>
+</section>
+<!-- Dashboard Title -->
+<section>
+<h2 class="font-headline-md text-headline-md border-b-[3px] border-[#0f1250] pb-xs mb-md uppercase tracking-tight inline-block">Dashboard</h2>
+<!-- Primary Navigation Grid -->
+<div class="grid grid-cols-2 gap-sm">
+<button class="brutalist-border hard-shadow-gold bg-[#d0a602] p-md flex flex-col items-center justify-center gap-xs interactive-element transition-all rounded-none">
+<span class="material-symbols-outlined text-[32px]">inventory_2</span>
+<span class="font-label-bold text-label-bold uppercase">My Orders</span>
+</button>
+<button class="brutalist-border hard-shadow bg-surface-container p-md flex flex-col items-center justify-center gap-xs interactive-element transition-all rounded-none">
+<span class="material-symbols-outlined text-[32px]">favorite</span>
+<span class="font-label-bold text-label-bold uppercase">Wishlist</span>
+</button>
+<button class="brutalist-border hard-shadow bg-surface-container p-md flex flex-col items-center justify-center gap-xs interactive-element transition-all rounded-none">
+<span class="material-symbols-outlined text-[32px]">settings</span>
+<span class="font-label-bold text-label-bold uppercase">Settings</span>
+</button>
+<button class="brutalist-border hard-shadow-red bg-primary-container text-on-primary-container p-md flex flex-col items-center justify-center gap-xs interactive-element transition-all rounded-none">
+<span class="material-symbols-outlined text-[32px]">logout</span>
+<span class="font-label-bold text-label-bold uppercase">Log Out</span>
+</button>
+</div>
+</section>
+<!-- Recent Hauls -->
+<section>
+<h2 class="font-headline-md text-headline-md border-b-[3px] border-[#0f1250] pb-xs mb-md uppercase tracking-tight inline-block">Recent Hauls</h2>
+<div class="flex flex-col gap-md">
+<!-- Order Card 1 -->
+<div class="brutalist-border hard-shadow bg-surface-container-lowest flex flex-col rounded-none">
+<div class="bg-secondary-container border-b-[3px] border-[#0f1250] p-sm flex justify-between items-center">
+<span class="font-label-bold text-label-bold uppercase text-on-secondary-container">Order #9928</span>
+<span class="font-label-sm text-label-sm uppercase bg-[#0f1250] text-white px-xs py-1 rounded-none border-[2px] border-[#0f1250] shadow-[2px_2px_0_0_#d0a602]">Shipped</span>
+</div>
+<div class="p-sm flex gap-sm items-center">
+<div class="w-16 h-16 brutalist-border overflow-hidden rounded-none shrink-0 bg-surface-variant flex-shrink-0">
+<img alt="Thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLvZvvy1cMNK_lnDYCGlRjl6mr1544dOl3xbuo49Ze_lQDx2OXUnqObMXtDPkGyY-yShCKne3t8F-PFR4gxDaSU3aw3NnR6DqyqgCafaZkJs9jdu6kzZ4EfVweVRkSEOmSizDcg5rn-5m7uQITlFPw_1JHCzEsP4nVSukgxvOEI2-wwygHggL0tKVZSdiF8iqBzXRPQlAnfovLWxAc10DB5Y02NSCZNIoXUVyc_mQA7RC1xtiuVjpmdfHRWvu-EcbRCT6lSxRSYblQ">
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Placed: Oct 12, 2023</span>
+<span class="font-label-bold text-label-bold mt-xs">2 Items · $45.00</span>
+</div>
+</div>
+</div>
+<!-- Order Card 2 -->
+<div class="brutalist-border hard-shadow bg-surface-container-lowest flex flex-col rounded-none">
+<div class="bg-surface-variant border-b-[3px] border-[#0f1250] p-sm flex justify-between items-center">
+<span class="font-label-bold text-label-bold uppercase text-on-surface">Order #8814</span>
+<span class="font-label-sm text-label-sm uppercase bg-surface-container-highest px-xs py-1 rounded-none border-[2px] border-[#0f1250]">Delivered</span>
+</div>
+<div class="p-sm flex gap-sm items-center">
+<div class="w-16 h-16 brutalist-border overflow-hidden rounded-none shrink-0 bg-surface-variant flex-shrink-0">
+<img alt="Thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLvIPvJYdJ3bcxfc-SaX4Db3J11YbWp3FKMAGT8IYAQr0JCcop3bXOrRf98CFbTQn36KQpUH3ZBxrvrriHc85LvNLKtZ7FNQLHnxPukwBAvbgf2yUyW9IxMpipxdlf-f8pO9d-qMMGSmMrAxnvLajPqq4QdW-VZCxJ9b2NYz7fzfdSet4NWmgedCiue5tEPnlxqKZZfG8gtEcTr2ucD9vGOlzG6Vx-7BaTSWcQaB4ZNC2FU5LZQ3m7cUFFSc8ivocR9QpUOO-dj_rg">
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Placed: Sep 05, 2023</span>
+<span class="font-label-bold text-label-bold mt-xs">1 Item · $12.50</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Saved Address & Payment -->
+<section class="pb-xl">
+<h2 class="font-headline-md text-headline-md border-b-[3px] border-[#0f1250] pb-xs mb-md uppercase tracking-tight inline-block">Wallet &amp; Spots</h2>
+<div class="flex flex-col gap-sm">
+<div class="brutalist-border hard-shadow bg-tertiary-fixed p-sm flex justify-between items-center rounded-none">
+<div class="flex gap-sm items-center">
+<span class="material-symbols-outlined text-[24px]">location_on</span>
+<div class="flex flex-col">
+<span class="font-label-bold text-label-bold uppercase">Default Address</span>
+<span class="font-label-sm text-label-sm text-on-tertiary-fixed-variant">123 Street Ave, NY 10001</span>
+</div>
+</div>
+<button class="material-symbols-outlined border-[2px] border-[#0f1250] p-1 shadow-[2px_2px_0_0_#0f1250] active:translate-y-1 active:translate-x-1 active:shadow-none transition-all bg-white rounded-none">edit</button>
+</div>
+<div class="brutalist-border hard-shadow bg-secondary-fixed p-sm flex justify-between items-center rounded-none">
+<div class="flex gap-sm items-center">
+<span class="material-symbols-outlined text-[24px]">credit_card</span>
+<div class="flex flex-col">
+<span class="font-label-bold text-label-bold uppercase">Saved Visa</span>
+<span class="font-label-sm text-label-sm text-on-secondary-fixed-variant">**** **** **** 4242</span>
+</div>
+</div>
+<button class="material-symbols-outlined border-[2px] border-[#0f1250] p-1 shadow-[2px_2px_0_0_#0f1250] active:translate-y-1 active:translate-x-1 active:shadow-none transition-all bg-white rounded-none">edit</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full h-20 flex justify-around items-stretch z-50 border-t-4 border-on-secondary-fixed bg-background md:hidden rounded-none">
+<a class="flex flex-col items-center justify-center text-on-surface h-full w-full border-x-[1px] border-on-secondary-fixed opacity-80 hover:bg-secondary-container active:scale-95 transition-transform rounded-none" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">home</span>
+<span class="font-label-bold text-label-bold mt-1">HOME</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface h-full w-full border-x-[1px] border-on-secondary-fixed opacity-80 hover:bg-secondary-container active:scale-95 transition-transform rounded-none" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">shopping_bag</span>
+<span class="font-label-bold text-label-bold mt-1">SHOP</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface h-full w-full border-x-[1px] border-on-secondary-fixed opacity-80 hover:bg-secondary-container active:scale-95 transition-transform rounded-none" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">shopping_cart</span>
+<span class="font-label-bold text-label-bold mt-1">CART</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-tertiary-container text-on-tertiary-container h-full w-full border-x-2 border-on-secondary-fixed hover:bg-secondary-container active:scale-95 transition-transform rounded-none" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-bold text-label-bold mt-1">ACCOUNT</span>
+</a>
+</nav>
+</body></html>

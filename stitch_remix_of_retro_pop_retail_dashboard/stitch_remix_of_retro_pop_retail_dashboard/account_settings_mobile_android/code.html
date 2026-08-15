@@ -1,0 +1,224 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Owsxi - Account Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&amp;family=Space+Grotesk:wght@500;700&amp;family=Hanken+Grotesk:wght@400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#ffdad4",
+                        "surface-dim": "#ddd9d6",
+                        "surface-variant": "#e6e2de",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#bfc2ff",
+                        "on-primary-fixed-variant": "#930301",
+                        "on-secondary-fixed-variant": "#3d417e",
+                        "surface-container-low": "#f7f3ef",
+                        "surface-container": "#f1ede9",
+                        "on-primary-container": "#ff9686",
+                        "secondary-fixed": "#e0e0ff",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#1c1c19",
+                        "tertiary-fixed": "#ffe08b",
+                        "tertiary-fixed-dim": "#eec12d",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#e3beb8",
+                        "outline": "#8f706b",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "primary-container": "#900000",
+                        "tertiary": "#745b00",
+                        "secondary-container": "#b5b9fe",
+                        "on-secondary-fixed": "#0f1250",
+                        "on-surface-variant": "#5b403c",
+                        "on-tertiary-container": "#4f3d00",
+                        "surface-tint": "#b62417",
+                        "on-primary-fixed": "#410000",
+                        "on-background": "#1c1c19",
+                        "inverse-surface": "#31302e",
+                        "surface-bright": "#fdf9f5",
+                        "error-container": "#ffdad6",
+                        "surface": "#fdf9f5",
+                        "on-tertiary-fixed-variant": "#584400",
+                        "surface-container-high": "#ebe7e4",
+                        "on-secondary-container": "#434784",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#ffb4a8",
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#fdf9f5",
+                        "inverse-on-surface": "#f4f0ec",
+                        "surface-container-highest": "#e5e2de",
+                        "on-tertiary-fixed": "#241a00",
+                        "secondary": "#555997",
+                        "primary": "#660000",
+                        "tertiary-container": "#d0a602"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "margin-desktop": "64px",
+                        "xs": "4px",
+                        "sm": "12px",
+                        "margin-mobile": "16px",
+                        "md": "24px",
+                        "lg": "48px",
+                        "xl": "80px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Bricolage Grotesque"],
+                        "headline-lg-mobile": ["Bricolage Grotesque"],
+                        "label-sm": ["Space Grotesk"],
+                        "headline-lg": ["Bricolage Grotesque"],
+                        "body-md": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Bricolage Grotesque"],
+                        "label-bold": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["64px", { "lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "38px", "fontWeight": "800" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-lg": ["40px", { "lineHeight": "48px", "fontWeight": "800" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "label-bold": ["14px", { "lineHeight": "20px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .grid-bg {
+            background-image: linear-gradient(to right, rgba(15, 18, 80, 0.1) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(15, 18, 80, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .hard-shadow {
+            box-shadow: 4px 4px 0px 0px #0f1250;
+        }
+        .hard-shadow-active:active {
+            box-shadow: 0px 0px 0px 0px #0f1250;
+            transform: translate(4px, 4px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface grid-bg min-h-screen flex flex-col font-body-md overflow-x-hidden">
+<!-- TopAppBar (Settings variation, suppressing standard shell) -->
+<header class="fixed top-0 w-full z-50 bg-background border-b-4 border-on-secondary-fixed shadow-[4px_4px_0px_0px_#b5b9fe] flex justify-between items-center px-margin-mobile h-20">
+<button class="text-primary hover:bg-secondary-container transition-transform active:translate-x-1 active:translate-y-1 p-2 border-2 border-transparent">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<span class="font-display-lg text-headline-lg-mobile uppercase tracking-tighter text-on-background">OWSXI</span>
+<div class="w-10"></div> <!-- Spacer for balance -->
+</header>
+<main class="flex-grow pt-[100px] pb-[120px] px-margin-mobile flex flex-col gap-6">
+<h1 class="font-display-lg text-headline-lg-mobile uppercase tracking-tighter text-on-background mt-4">
+            ACCOUNT SETTINGS
+        </h1>
+<!-- Section 1: Profile Information -->
+<section class="border-4 border-on-secondary-fixed bg-surface p-4 hard-shadow">
+<h2 class="font-headline-md text-headline-md text-primary mb-4 uppercase">Profile Information</h2>
+<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-1">
+<label class="font-label-bold text-label-bold text-on-surface-variant uppercase">Full Name</label>
+<input class="w-full border-2 border-on-secondary-fixed bg-surface-container p-2 font-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-0" type="text" value="Jane Doe">
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-bold text-label-bold text-on-surface-variant uppercase">Mobile Number</label>
+<input class="w-full border-2 border-on-secondary-fixed bg-surface-container p-2 font-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-0" type="tel" value="+1 555-0198">
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-bold text-label-bold text-on-surface-variant uppercase">Email Address</label>
+<input class="w-full border-2 border-on-secondary-fixed bg-surface-container p-2 font-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-0" type="email" value="jane.doe@gmail.com">
+</div>
+<button class="mt-2 bg-tertiary-fixed text-on-tertiary-fixed border-3 border-on-secondary-fixed py-3 px-6 font-label-bold text-label-bold uppercase tracking-wider hard-shadow hard-shadow-active transition-all">
+                    Save Changes
+                </button>
+</div>
+</section>
+<!-- Section 2: Saved Addresses -->
+<section class="border-4 border-on-secondary-fixed bg-surface p-4 hard-shadow">
+<div class="flex justify-between items-center mb-4">
+<h2 class="font-headline-md text-headline-md text-primary uppercase">Saved Addresses</h2>
+<button class="bg-primary-container text-on-primary-container p-1 border-2 border-on-secondary-fixed hard-shadow hard-shadow-active transition-all">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+<div class="flex flex-col gap-3">
+<div class="border-2 border-on-secondary-fixed p-3 bg-secondary-container flex justify-between items-start">
+<div>
+<p class="font-label-bold text-label-bold uppercase">Home</p>
+<p class="font-body-md text-sm mt-1">123 Brutal St, Apt 4B<br>Neo City, 90210</p>
+</div>
+<button class="text-on-secondary-container hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Section 3: Account Security -->
+<section class="border-4 border-on-secondary-fixed bg-surface p-4 hard-shadow">
+<h2 class="font-headline-md text-headline-md text-primary mb-4 uppercase">Account Security</h2>
+<div class="flex flex-col gap-3">
+<button class="w-full border-2 border-on-secondary-fixed bg-surface-container p-3 flex justify-between items-center hover:bg-secondary-fixed-dim transition-colors hard-shadow-active">
+<span class="font-label-bold text-label-bold uppercase">Change Password</span>
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+<button class="w-full border-2 border-on-secondary-fixed bg-surface-container p-3 flex justify-between items-center hover:bg-secondary-fixed-dim transition-colors hard-shadow-active">
+<span class="font-label-bold text-label-bold uppercase">Two-Factor Auth (2FA)</span>
+<span class="text-primary-container font-label-bold text-label-sm">Disabled</span>
+</button>
+</div>
+</section>
+<!-- Section 4: Linked Wallets & Banks -->
+<section class="border-4 border-on-secondary-fixed bg-surface p-4 hard-shadow mb-8">
+<h2 class="font-headline-md text-headline-md text-primary mb-4 uppercase">Linked Wallets</h2>
+<div class="flex flex-col gap-3">
+<div class="border-2 border-on-secondary-fixed p-3 flex justify-between items-center bg-tertiary-fixed">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-label-bold text-label-bold uppercase">GCash</span>
+</div>
+<span class="font-body-md text-sm">***1234</span>
+</div>
+<button class="w-full border-2 border-dashed border-on-secondary-fixed bg-surface-container p-3 flex justify-center items-center hover:bg-surface-variant transition-colors text-on-surface-variant gap-2">
+<span class="material-symbols-outlined" data-icon="add_link">add_link</span>
+<span class="font-label-bold text-label-bold uppercase">Link New Account</span>
+</button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-background border-t-4 border-on-secondary-fixed flex justify-around items-center h-24 pb-safe px-4 block md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-secondary-fixed-dim active:scale-95 transition-transform w-1/4" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home">home</span>
+<span class="font-label-bold text-label-sm uppercase">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-secondary-fixed-dim active:scale-95 transition-transform w-1/4" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="storefront">storefront</span>
+<span class="font-label-bold text-label-sm uppercase">Shop</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-secondary-fixed-dim active:scale-95 transition-transform w-1/4" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-label-bold text-label-sm uppercase">Cart</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-tertiary-fixed text-on-tertiary-fixed border-2 border-on-secondary-fixed shadow-[2px_2px_0px_0px_#0f1250] -rotate-2 p-2 active:scale-95 transition-transform w-1/4" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
+<span class="font-label-bold text-label-sm uppercase">Account</span>
+</a>
+</nav>
+</body></html>

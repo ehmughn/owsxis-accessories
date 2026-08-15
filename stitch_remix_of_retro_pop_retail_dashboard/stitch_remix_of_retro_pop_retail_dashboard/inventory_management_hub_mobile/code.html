@@ -1,0 +1,300 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>OWSXI ADMIN - Inventory Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&amp;family=Hanken+Grotesk:wght@400&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-container": "#d0a602",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "surface-container-low": "#f7f3ef",
+                    "on-surface-variant": "#5b403c",
+                    "on-primary": "#ffffff",
+                    "on-background": "#1c1c19",
+                    "on-secondary-fixed-variant": "#3d417e",
+                    "primary-fixed": "#ffdad4",
+                    "outline": "#8f706b",
+                    "primary": "#660000",
+                    "inverse-primary": "#ffb4a8",
+                    "outline-variant": "#e3beb8",
+                    "primary-fixed-dim": "#ffb4a8",
+                    "surface-container-highest": "#e5e2de",
+                    "on-tertiary-fixed": "#241a00",
+                    "secondary-fixed": "#e0e0ff",
+                    "secondary-container": "#b5b9fe",
+                    "on-secondary-fixed": "#0f1250",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#4f3d00",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#930301",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary": "#745b00",
+                    "tertiary-fixed-dim": "#eec12d",
+                    "surface-dim": "#ddd9d6",
+                    "inverse-surface": "#31302e",
+                    "surface-container": "#f1ede9",
+                    "secondary-fixed-dim": "#bfc2ff",
+                    "inverse-on-surface": "#f4f0ec",
+                    "primary-container": "#900000",
+                    "secondary": "#555997",
+                    "surface-container-high": "#ebe7e4",
+                    "on-error-container": "#93000a",
+                    "on-secondary-container": "#434784",
+                    "surface": "#fdf9f5",
+                    "surface-variant": "#e5e2de",
+                    "on-primary-fixed": "#410000",
+                    "background": "#fdf9f5",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#ff9686",
+                    "surface-tint": "#b62417",
+                    "tertiary-fixed": "#ffe08b",
+                    "surface-bright": "#fdf9f5",
+                    "on-tertiary-fixed-variant": "#584400",
+                    "on-surface": "#1c1c19"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0rem",
+                    "lg": "0rem",
+                    "xl": "0rem",
+                    "full": "0rem"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "md": "24px",
+                    "margin-desktop": "64px",
+                    "xs": "4px",
+                    "sm": "12px",
+                    "lg": "48px",
+                    "xl": "80px",
+                    "base": "8px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "display-lg": [
+                            "Bricolage Grotesque"
+                    ],
+                    "body-lg": [
+                            "Hanken Grotesk"
+                    ],
+                    "label-sm": [
+                            "Space Grotesk"
+                    ],
+                    "body-md": [
+                            "Hanken Grotesk"
+                    ],
+                    "label-bold": [
+                            "Space Grotesk"
+                    ],
+                    "headline-lg": [
+                            "Bricolage Grotesque"
+                    ],
+                    "headline-lg-mobile": [
+                            "Bricolage Grotesque"
+                    ],
+                    "headline-md": [
+                            "Bricolage Grotesque"
+                    ]
+            },
+            "fontSize": {
+                    "display-lg": [
+                            "64px",
+                            {
+                                    "lineHeight": "72px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "800"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-bold": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-lg": [
+                            "40px",
+                            {
+                                    "lineHeight": "48px",
+                                    "fontWeight": "800"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "32px",
+                            {
+                                    "lineHeight": "38px",
+                                    "fontWeight": "800"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "700"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        .neo-shadow-gold {
+            box-shadow: 4px 4px 0px 0px #d0a602;
+        }
+        .neo-shadow-navy {
+            box-shadow: 4px 4px 0px 0px #0f1250;
+        }
+        .neo-shadow-red {
+            box-shadow: 4px 4px 0px 0px #900000;
+        }
+        .neo-border {
+            border: 3px solid #0f1250;
+        }
+        .neo-interactive:active {
+            transform: translate(4px, 4px);
+            box-shadow: none !important;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col pb-xl overflow-x-hidden md:hidden">
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-inverse-surface rounded-none w-full sticky top-0 z-50 border-b-4 border-on-secondary-fixed dark:border-secondary-fixed shadow-[4px_4px_0px_0px_#b5b9fe] flex justify-between items-center px-margin-mobile py-sm">
+<button class="text-primary dark:text-primary-fixed-dim hover:bg-secondary-container transition-all duration-75 active:translate-x-1 active:translate-y-1 active:shadow-none p-2 neo-border bg-white neo-shadow-navy">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-extrabold text-primary dark:text-primary-fixed-dim tracking-tighter uppercase">OWSXI ADMIN</h1>
+<button class="text-primary dark:text-primary-fixed-dim hover:bg-secondary-container transition-all duration-75 active:translate-x-1 active:translate-y-1 active:shadow-none p-2 neo-border bg-white neo-shadow-navy">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+</header>
+<main class="flex-grow p-margin-mobile space-y-md mt-sm">
+<!-- Marquee Divider -->
+<div class="neo-border bg-secondary-container text-on-secondary-fixed overflow-hidden whitespace-nowrap py-2 neo-shadow-gold mb-md">
+<p class="font-label-bold text-label-bold uppercase animate-[marquee_10s_linear_infinite] inline-block">
+                INVENTORY HUB // MANAGE STOCK // UPDATE PRODUCTS // INVENTORY HUB // MANAGE STOCK // UPDATE PRODUCTS // 
+            </p>
+</div>
+<style>
+            @keyframes marquee {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+            }
+        </style>
+<!-- Primary Actions Bento Grid -->
+<section class="grid grid-cols-1 gap-md">
+<button class="neo-border bg-primary text-on-primary w-full p-md text-left flex items-center justify-between neo-shadow-gold neo-interactive transition-transform group">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-[32px] group-hover:scale-110 transition-transform" data-icon="add_box">add_box</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile uppercase">Add New Product</span>
+</div>
+</button>
+<button class="neo-border bg-white text-on-surface w-full p-md text-left flex items-center justify-between neo-shadow-navy neo-interactive transition-transform group">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-[32px] text-primary group-hover:scale-110 transition-transform" data-icon="inventory">inventory</span>
+<span class="font-headline-md text-headline-md uppercase">Inventory Management</span>
+</div>
+</button>
+<button class="neo-border bg-secondary-fixed text-on-secondary-fixed w-full p-md text-left flex items-center justify-between neo-shadow-navy neo-interactive transition-transform group">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-[32px] text-on-secondary-fixed group-hover:scale-110 transition-transform" data-icon="edit_square">edit_square</span>
+<span class="font-headline-md text-headline-md uppercase">Edit a Product</span>
+</div>
+</button>
+</section>
+<!-- Quick Stock Overview -->
+<section class="mt-lg">
+<h2 class="font-headline-md text-headline-md uppercase mb-sm border-b-4 border-on-surface pb-xs inline-block">Quick Stock Overview</h2>
+<div class="grid grid-cols-2 gap-sm">
+<div class="neo-border bg-white p-sm neo-shadow-gold flex flex-col justify-between h-32">
+<div class="flex items-center gap-xs text-on-surface-variant font-label-bold text-label-bold uppercase">
+<span class="material-symbols-outlined text-[20px]" data-icon="category">category</span>
+<span>Total Items</span>
+</div>
+<div class="font-display-lg text-display-lg text-on-surface self-end">
+                        1,432
+                    </div>
+</div>
+<div class="neo-border bg-tertiary-fixed p-sm neo-shadow-navy flex flex-col justify-between h-32">
+<div class="flex items-center gap-xs text-on-tertiary-fixed-variant font-label-bold text-label-bold uppercase">
+<span class="material-symbols-outlined text-[20px]" data-icon="warning">warning</span>
+<span>Low Stock</span>
+</div>
+<div class="font-display-lg text-display-lg text-on-surface self-end">
+                        47
+                    </div>
+</div>
+<div class="neo-border bg-error-container p-sm neo-shadow-navy col-span-2 flex flex-col justify-between h-32">
+<div class="flex items-center gap-xs text-on-error-container font-label-bold text-label-bold uppercase">
+<span class="material-symbols-outlined text-[20px]" data-icon="error">error</span>
+<span>Out of Stock</span>
+</div>
+<div class="flex justify-between items-end w-full">
+<div class="font-label-sm text-label-sm max-w-[50%]">Immediate action required on critical SKUs.</div>
+<div class="font-display-lg text-display-lg text-error self-end">
+                            12
+                        </div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-background dark:bg-inverse-surface rounded-none fixed bottom-0 w-full z-50 border-t-4 border-on-secondary-fixed dark:border-secondary-fixed flex justify-around items-stretch h-xl">
+<!-- Dashboard (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-background p-2 hover:bg-surface-variant active:scale-95 transition-transform w-full" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-bold text-label-sm mt-1">Dashboard</span>
+</a>
+<!-- Inventory (Active) -->
+<a class="flex flex-col items-center justify-center bg-tertiary-container text-on-tertiary-fixed font-bold p-2 h-full active:scale-95 transition-transform w-full neo-border border-b-0 border-t-0 shadow-[inset_0px_4px_0px_0px_#0f1250]" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2" data-weight="fill" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-label-bold text-label-sm mt-1 uppercase tracking-tight">Inventory</span>
+</a>
+<!-- Orders (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-background p-2 hover:bg-surface-variant active:scale-95 transition-transform w-full" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-label-bold text-label-sm mt-1">Orders</span>
+</a>
+<!-- Media (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-background p-2 hover:bg-surface-variant active:scale-95 transition-transform w-full" href="#">
+<span class="material-symbols-outlined" data-icon="perm_media">perm_media</span>
+<span class="font-label-bold text-label-sm mt-1">Media</span>
+</a>
+<!-- Account (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-background p-2 hover:bg-surface-variant active:scale-95 transition-transform w-full" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-bold text-label-sm mt-1">Account</span>
+</a>
+</nav>
+</body></html>

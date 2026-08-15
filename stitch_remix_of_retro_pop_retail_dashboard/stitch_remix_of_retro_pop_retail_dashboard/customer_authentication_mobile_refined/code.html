@@ -1,0 +1,187 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Customer Authentication - OWSXI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;700;800&amp;family=Space+Grotesk:wght@500;700&amp;family=Hanken+Grotesk:wght@400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-on-surface": "#f4f0ec",
+                      "surface-container": "#f1ede9",
+                      "surface-variant": "#e5e2de",
+                      "on-primary": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "on-primary-container": "#ff9686",
+                      "tertiary-fixed-dim": "#eec12d",
+                      "on-surface": "#1c1c19",
+                      "surface": "#fdf9f5",
+                      "on-surface-variant": "#5b403c",
+                      "primary": "#660000",
+                      "primary-fixed-dim": "#ffb4a8",
+                      "secondary-container": "#b5b9fe",
+                      "on-tertiary-fixed-variant": "#584400",
+                      "primary-fixed": "#ffdad4",
+                      "on-secondary-fixed": "#0f1250",
+                      "secondary": "#555997",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-low": "#f7f3ef",
+                      "on-primary-fixed": "#410000",
+                      "surface-dim": "#ddd9d6",
+                      "on-tertiary-fixed": "#241a00",
+                      "inverse-primary": "#ffb4a8",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed": "#ffe08b",
+                      "on-error": "#ffffff",
+                      "tertiary-container": "#d0a602",
+                      "secondary-fixed": "#e0e0ff",
+                      "surface-tint": "#b62417",
+                      "surface-bright": "#fdf9f5",
+                      "surface-container-high": "#ebe7e4",
+                      "on-primary-fixed-variant": "#930301",
+                      "on-background": "#1c1c19",
+                      "secondary-fixed-dim": "#bfc2ff",
+                      "primary-container": "#900000",
+                      "outline": "#8f706b",
+                      "inverse-surface": "#31302e",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-highest": "#e5e2de",
+                      "outline-variant": "#e3beb8",
+                      "background": "#fdf9f5",
+                      "on-secondary-container": "#434784",
+                      "on-tertiary-container": "#4f3d00",
+                      "tertiary": "#745b00",
+                      "on-secondary-fixed-variant": "#3d417e",
+                      "error-container": "#ffdad6",
+                      "on-error-container": "#93000a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "margin-desktop": "64px",
+                      "sm": "12px",
+                      "gutter": "24px",
+                      "xl": "80px",
+                      "md": "24px",
+                      "base": "8px",
+                      "xs": "4px",
+                      "lg": "48px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "label-sm": ["Space Grotesk"],
+                      "headline-lg-mobile": ["Bricolage Grotesque"],
+                      "headline-lg": ["Bricolage Grotesque"],
+                      "headline-md": ["Bricolage Grotesque"],
+                      "display-lg": ["Bricolage Grotesque"],
+                      "body-md": ["Hanken Grotesk"],
+                      "label-bold": ["Space Grotesk"],
+                      "body-lg": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["32px", {"lineHeight": "38px", "fontWeight": "800"}],
+                      "headline-lg": ["40px", {"lineHeight": "48px", "fontWeight": "800"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-bold": ["14px", {"lineHeight": "20px", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        /* Light grid pattern for background */
+        .bg-grid-pattern {
+            background-image: 
+                linear-gradient(to right, var(--tw-colors-outline-variant) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--tw-colors-outline-variant) 1px, transparent 1px);
+            background-size: 24px 24px;
+            background-position: center top;
+        }
+        /* Override form input defaults for neo-brutalism */
+        input[type="email"], input[type="password"] {
+            box-shadow: 2px 2px 0px 0px var(--tw-colors-on-secondary-fixed);
+            border-radius: 0;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+        input[type="email"]:focus, input[type="password"]:focus {
+            outline: none;
+            box-shadow: 4px 4px 0px 0px var(--tw-colors-tertiary-container);
+            transform: translate(-2px, -2px);
+        }
+        input[type="checkbox"] {
+            border-radius: 0;
+            border: 2px solid var(--tw-colors-on-secondary-fixed);
+        }
+        input[type="checkbox"]:checked {
+            background-color: var(--tw-colors-primary-container);
+            border-color: var(--tw-colors-on-secondary-fixed);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface bg-grid-pattern min-h-screen flex flex-col font-body-md overflow-x-hidden selection:bg-tertiary-container selection:text-on-tertiary-container">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-50 flex items-center px-margin-mobile h-16 bg-surface border-b-[4px] border-secondary shadow-[0_4px_0_0_#b5b9fe] justify-center">
+<div class="font-headline-lg-mobile text-headline-lg-mobile font-extrabold text-primary tracking-tighter uppercase">
+            OWSXI
+        </div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex flex-col px-margin-mobile pt-sm pb-xl relative">
+<!-- Brand Illustration Area -->
+<div class="w-full h-48 border-[3px] border-on-secondary-fixed mb-md bg-secondary-container relative overflow-hidden shadow-[4px_4px_0_0_#0f1250]">
+<div class="w-full h-full bg-cover bg-center" data-alt="A highly stylized, chaotic 90s retro-pop illustration featuring a stylized urban character spray-painting a bright red exclamation mark on a deep navy brick wall. The art style is bold, hard-edged, with thick black outlines and flat vibrant colors like bright gold and deep crimson, heavily influenced by indie-sleaze and sticker-slap aesthetics. High contrast and loud visual noise." style="background-image: url('https://lh3.googleusercontent.com/aida/AP1WRLvZvvy1cMNK_lnDYCGlRjl6mr1544dOl3xbuo49Ze_lQDx2OXUnqObMXtDPkGyY-yShCKne3t8F-PFR4gxDaSU3aw3NnR6DqyqgCafaZkJs9jdu6kzZ4EfVweVRkSEOmSizDcg5rn-5m7uQITlFPw_1JHCzEsP4nVSukgxvOEI2-wwygHggL0tKVZSdiF8iqBzXRPQlAnfovLWxAc10DB5Y02NSCZNIoXUVyc_mQA7RC1xtiuVjpmdfHRWvu-EcbRCT6lSxRSYblQ');"></div>
+<!-- Decorative sticker -->
+<div class="absolute top-2 right-2 bg-tertiary-container border-[3px] border-on-secondary-fixed px-3 py-1 font-label-bold text-label-bold text-on-secondary-fixed shadow-[2px_2px_0_0_#0f1250] uppercase z-10">
+                Authorized
+            </div>
+</div>
+<!-- Auth Container -->
+<div class="w-full bg-surface-container border-[4px] border-on-secondary-fixed shadow-[4px_4px_0_0_#0f1250] flex flex-col relative z-10">
+<!-- Tabs (Sign In / Create Account) -->
+<div class="flex border-b-[4px] border-on-secondary-fixed">
+<button class="flex-1 py-4 bg-primary-container text-on-primary font-headline-md text-headline-md border-r-[4px] border-on-secondary-fixed uppercase hover:bg-primary transition-colors">
+                    Sign In
+                </button>
+<button class="flex-1 py-4 bg-surface text-on-surface-variant font-headline-md text-headline-md uppercase hover:bg-surface-variant transition-colors">
+                    Create
+                </button>
+</div>
+<!-- Form Area -->
+<form class="flex flex-col p-md gap-md">
+<div class="flex flex-col gap-xs">
+<label class="font-label-bold text-label-bold uppercase tracking-widest text-on-secondary-fixed" for="email">Email</label>
+<input class="w-full bg-surface border-[3px] border-on-secondary-fixed p-3 font-body-md text-on-surface uppercase placeholder-on-surface-variant/50 focus:ring-0" id="email" placeholder="YOUR@EMAIL.COM" type="email">
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-bold text-label-bold uppercase tracking-widest text-on-secondary-fixed" for="password">Password</label>
+<input class="w-full bg-surface border-[3px] border-on-secondary-fixed p-3 font-body-md text-on-surface placeholder-on-surface-variant/50 focus:ring-0" id="password" placeholder="••••••••" type="password">
+</div>
+<div class="flex justify-between items-center mt-xs">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="w-5 h-5 text-primary-container focus:ring-0 focus:ring-offset-0 cursor-pointer" type="checkbox">
+<span class="font-label-bold text-label-sm text-on-surface-variant group-hover:text-on-surface transition-colors">STAY STICKY</span>
+</label>
+<a class="font-label-bold text-label-sm text-primary-container underline decoration-2 underline-offset-4 hover:text-primary transition-colors" href="#">Forgot?</a>
+</div>
+<!-- Primary Action Button -->
+<button class="mt-sm w-full bg-tertiary-container border-[3px] border-on-secondary-fixed py-4 font-headline-md text-headline-md uppercase text-on-secondary-fixed shadow-[4px_4px_0_0_#0f1250] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#0f1250] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all duration-100 flex items-center justify-center gap-2" type="button">
+                    Enter Shop
+                    <span class="material-symbols-outlined font-bold" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</form>
+</div>
+</main>
+</body></html>

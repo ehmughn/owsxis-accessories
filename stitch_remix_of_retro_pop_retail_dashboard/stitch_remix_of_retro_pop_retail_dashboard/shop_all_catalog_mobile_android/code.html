@@ -1,0 +1,272 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>OWSXI - Shop All</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#bfc2ff",
+                        "primary-fixed": "#ffdad4",
+                        "tertiary-fixed-dim": "#eec12d",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#e0e0ff",
+                        "secondary": "#555997",
+                        "outline-variant": "#e3beb8",
+                        "surface-variant": "#e5e2de",
+                        "background": "#fdf9f5",
+                        "tertiary-fixed": "#ffe08b",
+                        "on-primary-fixed": "#410000",
+                        "on-tertiary-fixed": "#241a00",
+                        "on-secondary-container": "#434784",
+                        "tertiary": "#745b00",
+                        "on-tertiary-fixed-variant": "#584400",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#ff9686",
+                        "inverse-surface": "#31302e",
+                        "secondary-container": "#b5b9fe",
+                        "error": "#ba1a1a",
+                        "primary-container": "#900000",
+                        "on-tertiary-container": "#4f3d00",
+                        "surface-dim": "#ddd9d6",
+                        "surface-container-low": "#f7f3ef",
+                        "on-tertiary": "#ffffff",
+                        "surface-bright": "#fdf9f5",
+                        "outline": "#8f706b",
+                        "inverse-primary": "#ffb4a8",
+                        "surface-container-high": "#ebe7e4",
+                        "surface-tint": "#b62417",
+                        "on-surface": "#1c1c19",
+                        "on-secondary-fixed": "#0f1250",
+                        "on-secondary-fixed-variant": "#3d417e",
+                        "surface-container": "#f1ede9",
+                        "primary": "#660000",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#930301",
+                        "on-surface-variant": "#5b403c",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "tertiary-container": "#d0a602",
+                        "surface": "#fdf9f5",
+                        "surface-container-highest": "#e5e2de",
+                        "on-background": "#1c1c19",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f4f0ec",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "24px",
+                        "margin-desktop": "64px",
+                        "xl": "80px",
+                        "lg": "48px",
+                        "base": "8px",
+                        "margin-mobile": "16px",
+                        "xs": "4px",
+                        "gutter": "24px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Hanken Grotesk"],
+                        "display-lg": ["Bricolage Grotesque"],
+                        "headline-md": ["Bricolage Grotesque"],
+                        "headline-lg-mobile": ["Bricolage Grotesque"],
+                        "label-bold": ["Space Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Bricolage Grotesque"],
+                        "label-sm": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg": ["64px", { "lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "38px", "fontWeight": "800" }],
+                        "label-bold": ["14px", { "lineHeight": "20px", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["40px", { "lineHeight": "48px", "fontWeight": "800" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #0f1250 1px, transparent 1px), linear-gradient(to bottom, #0f1250 1px, transparent 1px)"
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            background-image: theme('backgroundImage.grid-pattern');
+            background-size: 20px 20px;
+        }
+        .hard-shadow {
+            box-shadow: 4px 4px 0px 0px theme('colors.on-secondary-fixed');
+        }
+        .hard-shadow-active:active {
+            box-shadow: 0px 0px 0px 0px theme('colors.on-secondary-fixed');
+            transform: translate(4px, 4px);
+        }
+        .sticker-shadow {
+            box-shadow: 0 0 0 4px white, 4px 4px 0 4px theme('colors.on-secondary-fixed');
+        }
+        
+        /* Hide scrollbar for horizontal scroll but keep functionality */
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="text-on-background font-body-md pb-32">
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-on-surface text-primary dark:text-primary-fixed fixed top-0 w-full z-50 border-b-4 border-on-secondary-fixed shadow-[4px_4px_0px_0px_#b5b9fe] flex justify-between items-center px-margin-mobile h-20">
+<button class="hover:bg-secondary-container transition-transform active:translate-x-1 active:translate-y-1 active:shadow-none p-2 border-2 border-transparent">
+<span class="material-symbols-outlined text-3xl" data-icon="menu">menu</span>
+</button>
+<span class="font-display-lg text-headline-lg-mobile uppercase tracking-tighter text-on-background dark:text-surface">OWSXI</span>
+<button class="hover:bg-secondary-container transition-transform active:translate-x-1 active:translate-y-1 active:shadow-none p-2 border-2 border-transparent relative">
+<span class="material-symbols-outlined text-3xl" data-icon="shopping_bag">shopping_bag</span>
+<span class="absolute top-1 right-1 bg-primary-container text-on-primary-container text-xs font-bold w-5 h-5 flex items-center justify-center border-2 border-on-secondary-fixed rounded-none">3</span>
+</button>
+</header>
+<main class="pt-24 px-margin-mobile flex flex-col gap-8 max-w-[1200px] mx-auto">
+<!-- Page Title -->
+<div class="mt-8 bg-tertiary-fixed border-4 border-on-secondary-fixed hard-shadow p-6 relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 bg-grid-pattern bg-[length:10px_10px]"></div>
+<h1 class="font-display-lg text-headline-lg-mobile text-on-secondary-fixed relative z-10">SHOP ALL</h1>
+<p class="font-body-lg text-body-lg mt-2 relative z-10 font-bold border-l-4 border-primary pl-4">Searches</p>
+</div>
+<!-- Filters / Sort -->
+<div class="flex gap-4 overflow-x-auto hide-scroll pb-4 -mx-margin-mobile px-margin-mobile snap-x">
+<button class="flex-none bg-surface border-4 border-on-secondary-fixed px-6 py-3 font-label-bold text-label-bold uppercase hard-shadow hard-shadow-active flex items-center gap-2 snap-start">
+<span class="material-symbols-outlined" data-icon="tune">tune</span> Filter &amp; Sort
+            </button>
+<button class="flex-none bg-secondary-container border-4 border-on-secondary-fixed px-6 py-3 font-label-bold text-label-bold uppercase hard-shadow hard-shadow-active snap-start">
+                All
+            </button>
+<button class="flex-none bg-surface border-4 border-on-secondary-fixed px-6 py-3 font-label-bold text-label-bold uppercase hard-shadow hard-shadow-active snap-start">
+                Stickers
+            </button>
+<button class="flex-none bg-surface border-4 border-on-secondary-fixed px-6 py-3 font-label-bold text-label-bold uppercase hard-shadow hard-shadow-active snap-start">
+                Pins
+            </button>
+<button class="flex-none bg-surface border-4 border-on-secondary-fixed px-6 py-3 font-label-bold text-label-bold uppercase hard-shadow hard-shadow-active snap-start">
+                Accessories
+            </button>
+</div>
+<!-- Product Grid -->
+<div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+<!-- Product 1 -->
+<article class="bg-surface border-4 border-on-secondary-fixed hard-shadow flex flex-col group relative">
+<div class="absolute -top-4 -right-4 bg-tertiary-container border-3 border-on-secondary-fixed px-4 py-2 font-label-bold text-label-bold z-10 -rotate-3 sticker-shadow">
+                    BEST SELLER
+                </div>
+<div class="h-64 border-b-4 border-on-secondary-fixed bg-secondary-fixed p-4 relative overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="A detailed product shot of a large, high-quality die-cut sticker featuring the character Cinnamoroll. The style is bold and graphic, fitting a 90s retro-pop and neo-brutalist aesthetic. The sticker is laid flat against a high-contrast, slightly textured pastel background. Lighting is harsh and direct, casting a crisp, hard shadow behind the sticker to emphasize its physical presence." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-dT4twGcBoTnwaGhPpe2edAsiUMt4WGH7OmbWvt3n8H-sx3PgLTCLSqDHciDVuD9CbuEqeT5MKRj3EK9yED5fTsWqpI2sgu35BaTjLXipoiORIee2_apRTpxrV2R9SOfVB8hpNLJ5boNDtdVaLvK5FCbnVLrB8uulnDLixjodfS2Rx9j3bQ7IVU7Htd9xFxbOkFp7Ce14N-Zkb8lOFQl85KIyLRGAWXmL5hZcAyKWkMtqL_-ZQ8iv">
+</div>
+<div class="p-6 flex flex-col flex-grow bg-surface gap-4">
+<div class="flex justify-between items-start gap-4">
+<h2 class="font-headline-md text-headline-md text-on-surface">Cinnamoroll Big Sticker</h2>
+<span class="font-headline-md text-headline-md text-primary">₱30</span>
+</div>
+<div class="mt-auto pt-4 flex gap-4">
+<button class="flex-grow bg-on-secondary-fixed text-on-primary font-label-bold text-label-bold py-4 uppercase border-2 border-on-secondary-fixed hard-shadow hard-shadow-active flex justify-center items-center gap-2">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span> Add to Cart
+                        </button>
+</div>
+</div>
+</article>
+<!-- Product 2 -->
+<article class="bg-surface border-4 border-on-secondary-fixed hard-shadow flex flex-col group relative">
+<div class="h-64 border-b-4 border-on-secondary-fixed bg-surface-variant p-4 relative overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="A stylized product photograph of an enamel pin shaped like a retro inverter or electrical component. The pin has heavy black metal outlines and bright, blocky colors. It rests on a harsh white background with a prominent, deep black drop shadow. The overall aesthetic screams 90s indie-sleaze and neo-brutalism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUXS305UHuVay8ED_dgkoHa4AZi6VaqtZDb2AYjEo3qls6K3g6qZPsxL9zuMphF0Hj3n6kYyadLCJ0cO145IOcc_4fXc65S-d56KbS_jCwjdrRKJc3sUaASq6l5S6EFibW0aftJzcgMRpNVj64w7I09es2fBqvle-UhYZG0tdaAKSq97wwR1_RkgWYFoB28GoANRZtl6zhTsja_gA-k5QF5i4AVzAQYAG_-s3p0PnTUYBemEbzK6HF">
+</div>
+<div class="p-6 flex flex-col flex-grow bg-surface gap-4">
+<div class="flex justify-between items-start gap-4">
+<h2 class="font-headline-md text-headline-md text-on-surface">Inverter Pin</h2>
+<span class="font-headline-md text-headline-md text-primary">₱30</span>
+</div>
+<p class="font-label-bold text-label-sm text-error uppercase border-2 border-error w-fit px-2 py-1">Only 5 left!</p>
+<div class="mt-auto pt-4 flex gap-4">
+<button class="flex-grow bg-on-secondary-fixed text-on-primary font-label-bold text-label-bold py-4 uppercase border-2 border-on-secondary-fixed hard-shadow hard-shadow-active flex justify-center items-center gap-2">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span> Add to Cart
+                        </button>
+</div>
+</div>
+</article>
+<!-- Product 3 -->
+<article class="bg-surface border-4 border-on-secondary-fixed hard-shadow flex flex-col group relative">
+<div class="absolute top-4 -left-4 bg-primary-container text-on-primary border-3 border-on-secondary-fixed px-4 py-2 font-label-bold text-label-bold z-10 rotate-2 sticker-shadow">
+                    NEW
+                </div>
+<div class="h-64 border-b-4 border-on-secondary-fixed bg-primary-fixed-dim p-4 relative overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="A close-up studio shot of a chunky, pink beaded keychain featuring oversized, chaotic bead shapes and silver hardware. The aesthetic is tactile, Y2K-inspired, and intentionally cluttered. The background is a stark, solid color with a harsh, unblurred shadow cast by the keychain, reinforcing a bold brutalist style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-FKPopUeGcA57zGgNDJOuMb5GLrHr6hBqIT5Dsj0qLcoOBJ5AlnhQm9MgTxMOWahFi7qjrdTPDxqzrGlgJvwlNyGid8NPyrIElnKQUgpUvsSM5FZ5OZFPZu0zoEyS0HA1DZtloDQJWqt3SOf8vXxI-6st1PLMXtazySIcQ-g_DMSM8pSQrpDpaqgwXCpsF9t048gJlJ_ARn_0NefBuBqQjROie2K5g515se85t8CcSM-jj5lFa2bl">
+</div>
+<div class="p-6 flex flex-col flex-grow bg-surface gap-4">
+<div class="flex justify-between items-start gap-4">
+<h2 class="font-headline-md text-headline-md text-on-surface">Pink Beaded Keychain</h2>
+<span class="font-headline-md text-headline-md text-primary">₱100</span>
+</div>
+<div class="mt-auto pt-4 flex gap-4">
+<button class="flex-grow bg-on-secondary-fixed text-on-primary font-label-bold text-label-bold py-4 uppercase border-2 border-on-secondary-fixed hard-shadow hard-shadow-active flex justify-center items-center gap-2">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span> Add to Cart
+                        </button>
+</div>
+</div>
+</article>
+<!-- Product 4 -->
+<article class="bg-surface border-4 border-on-secondary-fixed hard-shadow flex flex-col group relative">
+<div class="h-64 border-b-4 border-on-secondary-fixed bg-secondary-container p-4 relative overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="A vibrant product image of a thick, retro-style woven bracelet with geometric patterns in bold primary colors. The presentation is raw and direct, shot top-down on a gridded background. The shadow is a solid block of color, perfectly aligning with a brutalist, indie-pop design language." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfcJXB6FxLkQIRTzADypCtEnxKxtU5uVXqZyJJWasdbRKMASwbspeQhuxHmFW_8ba8u4zh9WC7Z1sCq9K-Yvsg0IENDO5W39DOLo9PEj0HgQkdJYpeltWxhbuNGHsQWqAiq23LtSHnrruwge-F32XrH4ibqKiXMEYDOS5xAfjAF9WkRJTrNSm2bS4GEfZpz8TqiYzuCcdtiKNoUOMZt7ZAb8HgTrIVCcH2bVCeztZi1phzDfijLyZM">
+</div>
+<div class="p-6 flex flex-col flex-grow bg-surface gap-4">
+<div class="flex justify-between items-start gap-4">
+<h2 class="font-headline-md text-headline-md text-on-surface">Retro Bracelet</h2>
+<span class="font-headline-md text-headline-md text-primary">₱75 - ₱95</span>
+</div>
+<div class="mt-auto pt-4 flex gap-4">
+<button class="flex-grow bg-surface text-on-surface font-label-bold text-label-bold py-4 uppercase border-4 border-on-secondary-fixed hard-shadow hard-shadow-active flex justify-center items-center gap-2 hover:bg-secondary-fixed transition-colors">
+                            View Options
+                        </button>
+</div>
+</div>
+</article>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-background dark:bg-on-surface text-on-secondary-fixed font-label-bold text-label-bold fixed bottom-0 w-full z-50 border-t-4 border-on-secondary-fixed flex justify-around items-center h-24 pb-safe px-4">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-secondary-fixed-dim active:scale-95 transition-transform w-16" href="#">
+<span class="material-symbols-outlined text-3xl mb-1" data-icon="home">home</span>
+<span>Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-tertiary-fixed text-on-tertiary-fixed border-2 border-on-secondary-fixed shadow-[2px_2px_0px_0px_#0f1250] -rotate-2 p-2 hover:bg-secondary-fixed-dim active:scale-95 transition-transform w-16" href="#">
+<span class="material-symbols-outlined text-3xl mb-1" data-icon="storefront">storefront</span>
+<span>Shop</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-secondary-fixed-dim active:scale-95 transition-transform w-16 relative" href="#">
+<span class="material-symbols-outlined text-3xl mb-1" data-icon="shopping_cart">shopping_cart</span>
+<span>Cart</span>
+<span class="absolute top-1 right-2 w-3 h-3 bg-primary rounded-none border border-on-secondary-fixed"></span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-secondary-fixed-dim active:scale-95 transition-transform w-16" href="#">
+<span class="material-symbols-outlined text-3xl mb-1" data-icon="person">person</span>
+<span>Account</span>
+</a>
+</nav>
+
+
+</body></html>

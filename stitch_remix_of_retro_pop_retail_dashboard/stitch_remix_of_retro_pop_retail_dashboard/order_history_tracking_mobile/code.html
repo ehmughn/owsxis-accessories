@@ -1,0 +1,279 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Order History &amp; Tracking - OWSXI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&amp;family=Hanken+Grotesk:wght@100..900&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#31302e",
+                        "tertiary-fixed": "#ffe08b",
+                        "secondary-fixed-dim": "#bfc2ff",
+                        "secondary-fixed": "#e0e0ff",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#f1ede9",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "on-surface": "#1c1c19",
+                        "outline-variant": "#e3beb8",
+                        "secondary-container": "#b5b9fe",
+                        "on-tertiary-fixed": "#241a00",
+                        "on-primary-fixed-variant": "#930301",
+                        "background": "#fdf9f5",
+                        "tertiary": "#745b00",
+                        "surface-variant": "#e6e2de",
+                        "surface-bright": "#fdf9f5",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f7f3ef",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#ddd9d6",
+                        "on-surface-variant": "#5b403c",
+                        "primary-container": "#900000",
+                        "surface-tint": "#b62417",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#ffdad4",
+                        "on-secondary": "#ffffff",
+                        "outline": "#8f706b",
+                        "tertiary-fixed-dim": "#eec12d",
+                        "on-primary-container": "#ff9686",
+                        "on-tertiary": "#ffffff",
+                        "secondary": "#555997",
+                        "on-background": "#1c1c19",
+                        "inverse-primary": "#ffb4a8",
+                        "tertiary-container": "#d0a602",
+                        "on-tertiary-container": "#4f3d00",
+                        "surface-container-high": "#ebe7e4",
+                        "on-secondary-container": "#434784",
+                        "surface": "#fdf9f5",
+                        "inverse-on-surface": "#f4f0ec",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#410000",
+                        "primary": "#660000",
+                        "on-tertiary-fixed-variant": "#584400",
+                        "surface-container-highest": "#e5e2de",
+                        "on-secondary-fixed": "#0f1250",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#3d417e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "sm": "12px",
+                        "margin-mobile": "16px",
+                        "xs": "4px",
+                        "gutter": "24px",
+                        "md": "24px",
+                        "xl": "80px",
+                        "lg": "48px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "label-bold": ["Space Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Bricolage Grotesque"],
+                        "display-lg": ["Bricolage Grotesque"],
+                        "label-sm": ["Space Grotesk"],
+                        "headline-lg": ["Bricolage Grotesque"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-md": ["Bricolage Grotesque"]
+                    },
+                    "fontSize": {
+                        "label-bold": ["14px", { "lineHeight": "20px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "38px", "fontWeight": "800" }],
+                        "display-lg": ["64px", { "lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-lg": ["40px", { "lineHeight": "48px", "fontWeight": "800" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Neo-brutalist utility classes */
+        .brutalist-border { border: 4px solid #0f1250; border-radius: 0; }
+        .brutalist-shadow-gold { box-shadow: 4px 4px 0px 0px #d0a602; }
+        .brutalist-shadow-navy { box-shadow: 4px 4px 0px 0px #0f1250; }
+        .brutalist-shadow-red { box-shadow: 4px 4px 0px 0px #900000; }
+        .grid-bg {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(15, 18, 80, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(15, 18, 80, 0.05) 1px, transparent 1px);
+        }
+        
+        /* Interactive depth */
+        .interactive-shadow { transition: all 0.1s ease; }
+        .interactive-shadow:active { transform: translate(4px, 4px); box-shadow: 0px 0px 0px 0px transparent !important; }
+        
+        /* Progress Bar Base Styles */
+        .progress-line-active { border-top: 4px solid #0f1250; }
+        .progress-line-inactive { border-top: 4px dashed #bfc2ff; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col grid-bg pb-[80px]">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-40 bg-background dark:bg-inverse-surface border-b-4 border-inverse-on-surface dark:border-on-surface shadow-[4px_4px_0px_0px_#b5b9fe] flex justify-between items-center px-margin-mobile py-base">
+<button class="text-primary dark:text-primary-fixed hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:translate-x-[4px] active:translate-y-[4px] active:shadow-none">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<div class="font-headline-md text-headline-md font-extrabold tracking-tighter text-primary dark:text-primary-fixed uppercase">
+            OWSXI
+        </div>
+<button class="text-primary dark:text-primary-fixed hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all active:translate-x-[4px] active:translate-y-[4px] active:shadow-none">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full max-w-[1200px] mx-auto px-margin-mobile py-md flex flex-col gap-md">
+<!-- Page Title -->
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile uppercase tracking-tight text-on-surface brutalist-text-shadow">
+            My Orders
+        </h1>
+<!-- Order List (Vertical Stack) -->
+<div class="flex flex-col gap-md">
+<!-- Active Order Card -->
+<article class="brutalist-border brutalist-shadow-gold bg-surface-container-lowest p-margin-mobile flex flex-col gap-sm">
+<!-- Order Header Info -->
+<div class="flex justify-between items-start border-b-4 border-on-secondary-fixed pb-sm">
+<div>
+<h2 class="font-label-bold text-label-bold uppercase text-on-surface">Order #OW-9824</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Placed: Oct 24, 2023</p>
+</div>
+<div class="bg-tertiary-container text-on-tertiary-container px-2 py-1 font-label-bold text-label-bold uppercase border-2 border-on-secondary-fixed shadow-[2px_2px_0px_0px_#0f1250]">
+                        PREPARING
+                    </div>
+</div>
+<!-- Stepped Progress Indicator -->
+<div class="py-sm relative">
+<div class="absolute top-1/2 left-0 w-full flex -translate-y-1/2 z-0">
+<div class="w-1/3 progress-line-active"></div>
+<div class="w-1/3 progress-line-inactive"></div>
+<div class="w-1/3 progress-line-inactive"></div>
+</div>
+<div class="flex justify-between relative z-10 w-full px-2">
+<!-- Step 1: Placed (Done) -->
+<div class="flex flex-col items-center gap-1 w-10">
+<div class="w-6 h-6 rounded-none border-2 border-on-secondary-fixed bg-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-on-secondary-fixed" data-icon="check">check</span>
+</div>
+<span class="font-label-sm text-[10px] uppercase font-bold text-on-secondary-fixed text-center leading-tight">Placed</span>
+</div>
+<!-- Step 2: Preparing (Active) -->
+<div class="flex flex-col items-center gap-1 w-10">
+<div class="w-6 h-6 rounded-none border-2 border-on-secondary-fixed bg-tertiary-container flex items-center justify-center shadow-[2px_2px_0px_0px_#0f1250]">
+<span class="material-symbols-outlined text-[14px] text-on-tertiary-container" data-icon="package">package</span>
+</div>
+<span class="font-label-sm text-[10px] uppercase font-bold text-on-surface text-center leading-tight">Prep</span>
+</div>
+<!-- Step 3: Shipped (Pending) -->
+<div class="flex flex-col items-center gap-1 w-10">
+<div class="w-6 h-6 rounded-none border-2 border-outline bg-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-outline" data-icon="local_shipping">local_shipping</span>
+</div>
+<span class="font-label-sm text-[10px] uppercase font-bold text-outline text-center leading-tight">Shipped</span>
+</div>
+<!-- Step 4: Delivered (Pending) -->
+<div class="flex flex-col items-center gap-1 w-10">
+<div class="w-6 h-6 rounded-none border-2 border-outline bg-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-outline" data-icon="home">home</span>
+</div>
+<span class="font-label-sm text-[10px] uppercase font-bold text-outline text-center leading-tight">Delivered</span>
+</div>
+</div>
+</div>
+<!-- Order Items List -->
+<div class="flex flex-col gap-2 pt-sm border-t-2 border-dashed border-on-surface-variant">
+<div class="flex gap-sm items-center">
+<img class="w-16 h-16 object-cover border-2 border-on-secondary-fixed" data-alt="Close-up of a chunky, playful blue beaded keychain featuring oversized, glossy geometric shapes strung together with bright red paracord, resting on a stark white textured background. The scene is brightly lit with high contrast and distinct sharp shadows typical of an indie-sleaze, neo-brutalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChksUQNXwz-dIEcpwjFmhwBthA7k9dAYePHT1LZILinos_KNaT2E_WlBj8zeE0wDnJHnWXpKL8SRUKKurOett7PuVn5TLTduO7AV2xGIUKGfUTbNIQokHJTgYIc_yr17o1r-HG-udCzml2Pi3fj9KqTkXiLZA3QOqq3kvPY4039oqITNYIeM5p7tGlfR9W_LNvImgJi46Dh5baPgVnUEBLB6SPS90TrmqwcNtTCFXuFUwQavEkKps0">
+<div class="flex-1">
+<h3 class="font-label-bold text-label-bold text-on-surface leading-tight">Custom Blue Beaded Keychain</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Qty: 1</p>
+</div>
+<div class="font-headline-md text-[18px] font-bold text-on-surface">
+                            $24.00
+                        </div>
+</div>
+</div>
+<!-- Order Summary -->
+<div class="bg-secondary-fixed-dim border-2 border-on-secondary-fixed p-sm mt-sm flex flex-col gap-1 font-label-sm text-label-sm">
+<div class="flex justify-between text-on-secondary-fixed">
+<span>Subtotal</span>
+<span>$24.00</span>
+</div>
+<div class="flex justify-between text-on-secondary-fixed">
+<span>Shipping</span>
+<span>$5.00</span>
+</div>
+<div class="flex justify-between text-on-secondary-fixed border-b border-on-secondary-fixed pb-1 mb-1">
+<span>Tax</span>
+<span>$1.92</span>
+</div>
+<div class="flex justify-between font-label-bold text-label-bold text-on-secondary-fixed text-lg mt-1">
+<span>Total</span>
+<span>$30.92</span>
+</div>
+</div>
+<!-- Tracking Action Button -->
+<button class="mt-sm w-full bg-primary-container text-on-primary border-4 border-on-secondary-fixed py-sm font-label-bold text-label-bold uppercase tracking-widest brutalist-shadow-navy interactive-shadow flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+                    TRACK PACKAGE
+                </button>
+</article>
+<!-- Past Order Card (Simplified) -->
+<article class="brutalist-border brutalist-shadow-navy bg-surface-container-lowest p-margin-mobile flex flex-col gap-sm opacity-80">
+<div class="flex justify-between items-center border-b-2 border-on-surface-variant pb-sm">
+<div>
+<h2 class="font-label-bold text-label-bold uppercase text-on-surface">Order #OW-8711</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Delivered: Sep 12, 2023</p>
+</div>
+<div class="bg-surface-variant text-on-surface-variant px-2 py-1 font-label-bold text-label-bold uppercase border-2 border-on-surface-variant">
+                        DELIVERED
+                    </div>
+</div>
+<div class="flex gap-sm items-center pt-2">
+<img class="w-12 h-12 object-cover border-2 border-on-surface-variant grayscale" data-alt="A vintage-inspired oversized black graphic t-shirt featuring bold, chaotic, hand-drawn typography in neon pink and toxic green, folded neatly against a harsh, flat concrete background. Lit evenly to emphasize the stark graphic print and rough texture of the fabric." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAl4-gHHNaz2kX9azm-BsDUSwC0Di-JuCGe2R-6zOhV55ljce4epqUe9USzXLAoeM1bbHBIYIa2JVPiHJYAKjiRwc7is8JHiZ9jBZierOuV9OQKIRMVVWm21JcViL1qm2fN79icmzwOHKqdissn48aWxJzB4v7SlAE6rWCP_JexdXeU0oCvfwgrzm0q7oXhT-0rCP0oqYiBHL_mmD6oRVpscV25YJOS2Si3SCAXl8ZGydesk4QKl3wQ">
+<div class="flex-1">
+<h3 class="font-label-bold text-[12px] text-on-surface leading-tight truncate w-[150px]">Oversized Graphic Tee</h3>
+</div>
+<div class="font-headline-md text-[14px] font-bold text-on-surface">
+                            $45.00
+                        </div>
+</div>
+</article>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center bg-background dark:bg-inverse-surface py-xs border-t-4 border-inverse-on-surface z-50">
+<!-- Inactive: Home -->
+<a class="flex flex-col items-center justify-center text-on-surface dark:text-on-surface-variant p-2 hover:bg-secondary-container dark:hover:bg-secondary active:scale-95 transition-transform w-1/4" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home">home</span>
+<span class="font-label-sm text-[10px] uppercase tracking-wider hidden sm:block">Home</span>
+</a>
+<!-- Inactive: Shop -->
+<a class="flex flex-col items-center justify-center text-on-surface dark:text-on-surface-variant p-2 hover:bg-secondary-container dark:hover:bg-secondary active:scale-95 transition-transform w-1/4" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="storefront">storefront</span>
+<span class="font-label-sm text-[10px] uppercase tracking-wider hidden sm:block">Shop</span>
+</a>
+<!-- Inactive: Cart -->
+<a class="flex flex-col items-center justify-center text-on-surface dark:text-on-surface-variant p-2 hover:bg-secondary-container dark:hover:bg-secondary active:scale-95 transition-transform w-1/4" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-label-sm text-[10px] uppercase tracking-wider hidden sm:block">Cart</span>
+</a>
+<!-- Active: Account / Profile -->
+<a class="flex flex-col items-center justify-center bg-tertiary-container dark:bg-tertiary text-on-tertiary-container border-2 border-inverse-on-surface dark:border-on-surface p-2 hover:bg-secondary-container dark:hover:bg-secondary active:scale-95 transition-transform w-1/4" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-sm text-[10px] uppercase font-bold tracking-wider hidden sm:block">Account</span>
+</a>
+</nav>
+</body></html>

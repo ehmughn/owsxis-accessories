@@ -1,0 +1,272 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Order Secured - Owsxi</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#8f706b",
+                        "inverse-on-surface": "#f4f0ec",
+                        "on-tertiary-container": "#4f3d00",
+                        "surface-bright": "#fdf9f5",
+                        "surface-container-highest": "#e5e2de",
+                        "tertiary-fixed": "#ffe08b",
+                        "on-tertiary-fixed": "#241a00",
+                        "secondary-fixed-dim": "#bfc2ff",
+                        "secondary": "#555997",
+                        "error-container": "#ffdad6",
+                        "on-surface-variant": "#5b403c",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#ddd9d6",
+                        "secondary-fixed": "#e0e0ff",
+                        "on-primary-container": "#ff9686",
+                        "outline-variant": "#e3beb8",
+                        "tertiary-container": "#d0a602",
+                        "on-primary-fixed-variant": "#930301",
+                        "tertiary": "#745b00",
+                        "surface-variant": "#e5e2de",
+                        "tertiary-fixed-dim": "#eec12d",
+                        "primary-fixed": "#ffdad4",
+                        "inverse-primary": "#ffb4a8",
+                        "on-background": "#1c1c19",
+                        "surface-container-high": "#ebe7e4",
+                        "primary-container": "#900000",
+                        "primary": "#660000",
+                        "secondary-container": "#b5b9fe",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#434784",
+                        "error": "#ba1a1a",
+                        "surface-container": "#f1ede9",
+                        "surface-container-low": "#f7f3ef",
+                        "on-primary-fixed": "#410000",
+                        "inverse-surface": "#31302e",
+                        "on-secondary-fixed": "#0f1250",
+                        "on-secondary-fixed-variant": "#3d417e",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#584400",
+                        "surface": "#fdf9f5",
+                        "background": "#fdf9f5",
+                        "on-surface": "#1c1c19",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#b62417",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "brand-navy": "#000044",
+                        "brand-red": "#900000",
+                        "brand-gold": "#CFA500",
+                        "brand-white": "#ffffff",
+                        "brand-black": "#000000"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "0px"
+                    },
+                    "spacing": {
+                        "md": "24px",
+                        "xs": "4px",
+                        "base": "8px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "xl": "80px",
+                        "lg": "48px",
+                        "sm": "12px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": [
+                            "Bricolage Grotesque", "sans-serif"
+                        ],
+                        "headline-lg-mobile": [
+                            "Bricolage Grotesque", "sans-serif"
+                        ],
+                        "label-sm": [
+                            "Space Grotesk", "sans-serif"
+                        ],
+                        "headline-md": [
+                            "Bricolage Grotesque", "sans-serif"
+                        ],
+                        "body-md": [
+                            "Hanken Grotesk", "sans-serif"
+                        ],
+                        "body-lg": [
+                            "Hanken Grotesk", "sans-serif"
+                        ],
+                        "label-bold": [
+                            "Space Grotesk", "sans-serif"
+                        ],
+                        "display-lg": [
+                            "Bricolage Grotesque", "sans-serif"
+                        ]
+                    },
+                    "fontSize": {
+                        "headline-lg": [
+                            "40px",
+                            {
+                                "lineHeight": "48px",
+                                "fontWeight": "800"
+                            }
+                        ],
+                        "headline-lg-mobile": [
+                            "32px",
+                            {
+                                "lineHeight": "38px",
+                                "fontWeight": "800"
+                            }
+                        ],
+                        "label-sm": [
+                            "12px",
+                            {
+                                "lineHeight": "16px",
+                                "fontWeight": "500"
+                            }
+                        ],
+                        "headline-md": [
+                            "24px",
+                            {
+                                "lineHeight": "32px",
+                                "fontWeight": "700"
+                            }
+                        ],
+                        "body-md": [
+                            "16px",
+                            {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "body-lg": [
+                            "18px",
+                            {
+                                "lineHeight": "28px",
+                                "fontWeight": "400"
+                            }
+                        ],
+                        "label-bold": [
+                            "14px",
+                            {
+                                "lineHeight": "20px",
+                                "fontWeight": "700"
+                            }
+                        ],
+                        "display-lg": [
+                            "64px",
+                            {
+                                "lineHeight": "72px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "800"
+                            }
+                        ]
+                    }
+                },
+            },
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .grid-bg {
+            background-size: 20px 20px;
+            background-image:
+                linear-gradient(to right, #000044 1px, transparent 1px),
+                linear-gradient(to bottom, #000044 1px, transparent 1px);
+            opacity: 0.1;
+        }
+        .hard-shadow-red {
+            box-shadow: 4px 4px 0px 0px #900000;
+        }
+        .hard-shadow-navy {
+            box-shadow: 4px 4px 0px 0px #000044;
+        }
+        .hard-shadow-gold {
+            box-shadow: 4px 4px 0px 0px #CFA500;
+        }
+        .hard-shadow-white {
+            box-shadow: 4px 4px 0px 0px #ffffff;
+        }
+        .hard-shadow-sticker {
+            box-shadow: 0px 0px 0px 3px #000044, 4px 4px 0px 4px #ffffff;
+        }
+        .btn-press:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px 0px transparent !important;
+        }
+    </style>
+</head>
+<body class="bg-background relative min-h-screen font-body-md text-on-background selection:bg-brand-red selection:text-brand-white overflow-x-hidden">
+<!-- Grid Background -->
+<div class="absolute inset-0 grid-bg pointer-events-none z-0"></div>
+<!-- Top Navigation (Transactional Mode) -->
+<header class="w-full top-0 sticky bg-background border-b-[4px] border-brand-navy shadow-[0_4px_0_0_#b5b9fe] flex justify-center items-center px-margin-mobile h-16 z-50">
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-black tracking-tighter text-brand-navy uppercase">OWSXI</span>
+</header>
+<!-- Main Content -->
+<main class="relative z-10 px-margin-mobile py-lg flex flex-col gap-lg items-center max-w-[500px] mx-auto">
+<!-- Hero Section -->
+<section class="flex flex-col items-center text-center w-full mt-8">
+<div class="w-24 h-24 bg-brand-gold border-[4px] border-brand-navy flex items-center justify-center hard-shadow-navy mb-md rotate-[-2deg]">
+<span class="material-symbols-outlined text-[64px] text-brand-navy" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile uppercase text-brand-navy bg-brand-white px-md py-sm border-[4px] border-brand-navy hard-shadow-red inline-block rotate-[1deg]">
+                ORDER SECURED!
+            </h1>
+<p class="mt-md font-label-bold text-label-bold text-brand-navy bg-surface-container px-sm py-xs border-[2px] border-brand-navy hard-shadow-white rotate-[-1deg]">
+                Order #OW-9942-X
+            </p>
+</section>
+<!-- Order Summary Card -->
+<section class="w-full bg-brand-white border-[4px] border-brand-navy hard-shadow-navy flex flex-col">
+<div class="bg-[#b5b9fe] border-b-[4px] border-brand-navy p-sm flex items-center gap-xs">
+<span class="material-symbols-outlined text-brand-navy">shopping_bag</span>
+<h2 class="font-headline-md text-headline-md uppercase text-brand-navy">Your Haul</h2>
+</div>
+<div class="flex flex-col">
+<!-- Item 1 -->
+<div class="flex items-center gap-sm p-sm border-b-[4px] border-brand-navy">
+<div class="w-16 h-16 border-[2px] border-brand-navy bg-surface-container shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A stylized, high-contrast digital illustration of a 'Sad Hamster' in a holographic, retro-90s aesthetic. The hamster has exaggerated, expressive eyes and is surrounded by glitchy, neon-colored geometric shapes against a stark white background with heavy black outlines. The lighting is harsh and direct, emphasizing the flat, neo-brutalist sticker-slap style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHDpWMwa6stbELSaAuR7QRq0_Y08mQQ0_2auYDRJoDle6MMHD4uSdwY8g4UBQSez-gnn8jMLvywJloTriHKsYxAhZr-Wnpsml39fZ5dfHGR_JL-LarfWgKJZ7l8lStedDWIZU0rKK8Ub_vNVzjbo4OyHVHzFKX7EXOMwxwDfqztI1STIsCiwObTtbU-0f1Br1J3kvH4pg0dTKeTMzeO_M99WhPeUQg8SzNSl-o4tKskTmecIgEV8K4">
+</div>
+<div class="flex flex-col flex-grow">
+<span class="font-label-bold text-label-bold text-brand-navy uppercase">Sad Hamster Holographic</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Qty: 1</span>
+</div>
+<span class="font-headline-md text-headline-md text-brand-navy shrink-0">$8.00</span>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center gap-sm p-sm border-b-[4px] border-brand-navy">
+<div class="w-16 h-16 border-[2px] border-brand-navy bg-surface-container shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A striking digital art print featuring a 'Cyber-Girl' character in a bold, comic-book style. The character has bright neon pink hair, cybernetic augmentations, and is set against a vibrant yellow and blue grid background. The lines are thick and inked, evoking a 90s indie-sleaze vibe with high saturation and high contrast. Lighting is synthetic and neon." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt79ZssvEJOtZdAESZ_6_cIwv6-GW6upYVXP_ALPkP6in87OeSIOxEdRwbPjt21YqeitqRKN5TPLWeYz2YLPdXZ8Sesoj3e7gWoLKRB9IT0CFfFPiGmowPi6MqXOOjIyFDMT3fFmPUupLeI7iT9MtTNH-9GdT1k2xwl5Pl94Njl7PO20eLX0mLlEP-4CdVTw-S2pxALu0OFeY-bWCzfu_qr26jDWV4is_jeLGk0q7HQ2G1304r4FFR">
+</div>
+<div class="flex flex-col flex-grow">
+<span class="font-label-bold text-label-bold text-brand-navy uppercase">Cyber-Girl Art Print</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Qty: 1</span>
+</div>
+<span class="font-headline-md text-headline-md text-brand-navy shrink-0">$15.00</span>
+</div>
+<!-- Total Banner -->
+<div class="bg-brand-navy p-md flex justify-between items-center text-brand-gold">
+<span class="font-headline-md text-headline-md uppercase">Total Paid</span>
+<span class="font-headline-md text-headline-md">$23.00</span>
+</div>
+</div>
+</section>
+<!-- Actions -->
+<section class="w-full flex flex-col gap-md mt-sm">
+<button class="w-full bg-brand-red text-brand-white border-[4px] border-brand-navy py-sm px-md font-headline-md text-headline-md uppercase hard-shadow-navy btn-press transition-transform flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined">local_shipping</span>
+                Track Your Haul
+            </button>
+<button class="w-full bg-brand-white text-brand-navy border-[4px] border-brand-navy py-sm px-md font-headline-md text-headline-md uppercase hard-shadow-gold btn-press transition-transform flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined">storefront</span>
+                Return to Shop
+            </button>
+</section>
+</main>
+</body></html>

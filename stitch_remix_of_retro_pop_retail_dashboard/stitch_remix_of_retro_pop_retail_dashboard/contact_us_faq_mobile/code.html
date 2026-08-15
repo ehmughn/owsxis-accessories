@@ -1,0 +1,199 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>OWSXI - Contact Us &amp; FAQ</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&amp;family=Space+Grotesk:wght@500;700&amp;family=Hanken+Grotesk:wght@400&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .grid-bg {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, #ddd9d6 1px, transparent 1px),
+                linear-gradient(to bottom, #ddd9d6 1px, transparent 1px);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#ddd9d6",
+                        "surface-tint": "#b62417",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#31302e",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#f1ede9",
+                        "on-primary-container": "#ff9686",
+                        "secondary-fixed-dim": "#bfc2ff",
+                        "surface-variant": "#e5e2de",
+                        "primary": "#660000",
+                        "tertiary-fixed-dim": "#eec12d",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "primary-fixed": "#ffdad4",
+                        "surface": "#fdf9f5",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f7f3ef",
+                        "on-surface-variant": "#5b403c",
+                        "on-secondary-fixed": "#0f1250",
+                        "secondary-container": "#b5b9fe",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#ffe08b",
+                        "tertiary": "#745b00",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#1c1c19",
+                        "primary-container": "#900000",
+                        "inverse-primary": "#ffb4a8",
+                        "on-tertiary-container": "#4f3d00",
+                        "outline": "#8f706b",
+                        "on-primary-fixed-variant": "#930301",
+                        "secondary": "#555997",
+                        "surface-bright": "#fdf9f5",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed-variant": "#584400",
+                        "on-primary-fixed": "#410000",
+                        "on-background": "#1c1c19",
+                        "inverse-on-surface": "#f4f0ec",
+                        "on-tertiary-fixed": "#241a00",
+                        "on-secondary-fixed-variant": "#3d417e",
+                        "surface-container-high": "#ebe7e4",
+                        "outline-variant": "#e3beb8",
+                        "background": "#fdf9f5",
+                        "surface-container-highest": "#e5e2de",
+                        "secondary-fixed": "#e0e0ff",
+                        "on-secondary-container": "#434784",
+                        "tertiary-container": "#d0a602"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "0px"
+                    },
+                    "spacing": {
+                        "xl": "80px",
+                        "lg": "48px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "sm": "12px",
+                        "xs": "4px",
+                        "md": "24px",
+                        "gutter": "24px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "label-sm": ["Space Grotesk"],
+                        "headline-md": ["Bricolage Grotesque"],
+                        "label-bold": ["Space Grotesk"],
+                        "headline-lg": ["Bricolage Grotesque"],
+                        "display-lg": ["Bricolage Grotesque"],
+                        "headline-lg-mobile": ["Bricolage Grotesque"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "label-bold": ["14px", {"lineHeight": "20px", "fontWeight": "700"}],
+                        "headline-lg": ["40px", {"lineHeight": "48px", "fontWeight": "800"}],
+                        "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-lg-mobile": ["32px", {"lineHeight": "38px", "fontWeight": "800"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md grid-bg min-h-screen pb-24 md:pb-0">
+<!-- Header (Navigation suppressed for transactional page) -->
+<header class="sticky top-0 w-full z-50 flex justify-center items-center px-margin-mobile py-sm bg-background border-b-4 border-on-secondary-fixed shadow-[4px_4px_0px_0px_#d0a602]">
+<div class="font-display-lg text-headline-lg-mobile font-black tracking-tighter text-primary">OWSXI</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="w-full max-w-md mx-auto p-margin-mobile flex flex-col gap-xl">
+<!-- Hero Graphic -->
+<section class="w-full border-4 border-on-secondary-fixed bg-surface p-sm shadow-[4px_4px_0px_0px_#0f1250]">
+<img alt="Brand visual" class="w-full h-auto object-cover border-2 border-on-secondary-fixed" src="https://lh3.googleusercontent.com/aida/AP1WRLvZvvy1cMNK_lnDYCGlRjl6mr1544dOl3xbuo49Ze_lQDx2OXUnqObMXtDPkGyY-yShCKne3t8F-PFR4gxDaSU3aw3NnR6DqyqgCafaZkJs9jdu6kzZ4EfVweVRkSEOmSizDcg5rn-5m7uQITlFPw_1JHCzEsP4nVSukgxvOEI2-wwygHggL0tKVZSdiF8iqBzXRPQlAnfovLWxAc10DB5Y02NSCZNIoXUVyc_mQA7RC1xtiuVjpmdfHRWvu-EcbRCT6lSxRSYblQ">
+</section>
+<!-- Contact Section -->
+<section class="flex flex-col gap-md">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile uppercase text-on-secondary-fixed bg-secondary-fixed p-sm border-4 border-on-secondary-fixed shadow-[4px_4px_0px_0px_#900000]">HOLLER AT US!</h1>
+<form class="flex flex-col gap-sm bg-surface p-md border-4 border-on-secondary-fixed shadow-[4px_4px_0px_0px_#d0a602]">
+<div class="flex flex-col gap-xs">
+<label class="font-label-bold text-label-bold uppercase text-on-secondary-fixed">NAME</label>
+<input class="border-4 border-on-secondary-fixed bg-background p-sm font-body-md text-on-background focus:ring-0 focus:border-primary-container focus:outline-none shadow-[2px_2px_0px_0px_#0f1250]" type="text">
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-bold text-label-bold uppercase text-on-secondary-fixed">EMAIL</label>
+<input class="border-4 border-on-secondary-fixed bg-background p-sm font-body-md text-on-background focus:ring-0 focus:border-primary-container focus:outline-none shadow-[2px_2px_0px_0px_#0f1250]" type="email">
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-bold text-label-bold uppercase text-on-secondary-fixed">ORDER # (OPTIONAL)</label>
+<input class="border-4 border-on-secondary-fixed bg-background p-sm font-body-md text-on-background focus:ring-0 focus:border-primary-container focus:outline-none shadow-[2px_2px_0px_0px_#0f1250]" type="text">
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-bold text-label-bold uppercase text-on-secondary-fixed">MESSAGE</label>
+<textarea class="border-4 border-on-secondary-fixed bg-background p-sm font-body-md text-on-background focus:ring-0 focus:border-primary-container focus:outline-none shadow-[2px_2px_0px_0px_#0f1250] resize-none" rows="4"></textarea>
+</div>
+<button class="mt-sm bg-primary-container text-on-primary border-4 border-on-secondary-fixed py-sm px-md font-label-bold text-label-bold uppercase shadow-[4px_4px_0px_0px_#d0a602] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none transition-all" type="button">SEND IT</button>
+</form>
+</section>
+<!-- FAQ Section -->
+<section class="flex flex-col gap-md">
+<h2 class="font-headline-md text-headline-md uppercase text-on-secondary-fixed bg-tertiary-fixed p-sm border-4 border-on-secondary-fixed shadow-[4px_4px_0px_0px_#0f1250]">FAQ</h2>
+<div class="flex flex-col gap-sm">
+<!-- FAQ Item 1 -->
+<details class="group bg-surface border-4 border-on-secondary-fixed shadow-[4px_4px_0px_0px_#900000]">
+<summary class="flex justify-between items-center p-sm cursor-pointer font-label-bold text-label-bold uppercase text-on-secondary-fixed">
+                        Where is my order?
+                        <span class="material-symbols-outlined text-primary group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="p-sm pt-0 font-body-md text-on-surface border-t-4 border-on-secondary-fixed mt-xs bg-background">
+                        Orders typically ship within 3-5 business days. You'll receive a tracking email once it drops.
+                    </div>
+</details>
+<!-- FAQ Item 2 -->
+<details class="group bg-surface border-4 border-on-secondary-fixed shadow-[4px_4px_0px_0px_#900000]">
+<summary class="flex justify-between items-center p-sm cursor-pointer font-label-bold text-label-bold uppercase text-on-secondary-fixed">
+                        Do you ship internationally?
+                        <span class="material-symbols-outlined text-primary group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="p-sm pt-0 font-body-md text-on-surface border-t-4 border-on-secondary-fixed mt-xs bg-background">
+                        Yeah, we ship worldwide. Customs fees may apply depending on your location.
+                    </div>
+</details>
+<!-- FAQ Item 3 -->
+<details class="group bg-surface border-4 border-on-secondary-fixed shadow-[4px_4px_0px_0px_#900000]">
+<summary class="flex justify-between items-center p-sm cursor-pointer font-label-bold text-label-bold uppercase text-on-secondary-fixed">
+                        What is your return policy?
+                        <span class="material-symbols-outlined text-primary group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="p-sm pt-0 font-body-md text-on-surface border-t-4 border-on-secondary-fixed mt-xs bg-background">
+                        All sales are final on limited drops. Standard items can be returned within 14 days if unworn.
+                    </div>
+</details>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="mt-xl w-full border-t-4 border-on-secondary-fixed bg-surface p-md flex flex-col items-center gap-sm">
+<div class="font-display-lg text-headline-lg-mobile font-black tracking-tighter text-on-secondary-fixed opacity-50">OWSXI</div>
+<div class="flex gap-md text-primary">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-container">alternate_email</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-container">camera_alt</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-container">music_note</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mt-xs">© 2024 OWSXI. Stay Weird.</p><div class="flex gap-sm mt-xs justify-center"><a href="#" class="font-label-sm text-label-sm text-on-surface-variant uppercase hover:text-primary transition-all">Privacy Policy</a><span class="text-on-surface-variant opacity-50">|</span><a href="#" class="font-label-sm text-label-sm text-on-surface-variant uppercase hover:text-primary transition-all">Terms &amp; Conditions</a></div>
+</footer>
+
+
+</body></html>
