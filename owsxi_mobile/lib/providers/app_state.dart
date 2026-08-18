@@ -2,27 +2,43 @@ import 'package:flutter/material.dart';
 import '../models/models.dart';
 
 class AppState extends ChangeNotifier {
-  // Navigation & Role State
-  bool _isAdminMode = false;
+  // Navigation State
   int _currentCustomerIndex = 0; // 0: Home, 1: Shop, 2: Cart, 3: Account
-  int _currentAdminIndex = 0; // 0: Dashboard, 1: Inventory, 2: Orders, 3: Customers, 4: Settings
 
-  bool get isAdminMode => _isAdminMode;
   int get currentCustomerIndex => _currentCustomerIndex;
-  int get currentAdminIndex => _currentAdminIndex;
-
-  void toggleAdminMode() {
-    _isAdminMode = !_isAdminMode;
-    notifyListeners();
-  }
 
   void setCustomerIndex(int index) {
     _currentCustomerIndex = index;
     notifyListeners();
   }
 
-  void setAdminIndex(int index) {
-    _currentAdminIndex = index;
+  // Auth & Profile State
+  bool _isLoggedIn = true;
+  String _userName = 'Alex Vance';
+  String _userEmail = 'alex@stickercollector.io';
+  String _userPhone = '+1 555-0198';
+
+  bool get isLoggedIn => _isLoggedIn;
+  String get userName => _userName;
+  String get userEmail => _userEmail;
+  String get userPhone => _userPhone;
+
+  void login({String? name, String? email}) {
+    _isLoggedIn = true;
+    if (name != null && name.isNotEmpty) _userName = name;
+    if (email != null && email.isNotEmpty) _userEmail = email;
+    notifyListeners();
+  }
+
+  void logout() {
+    _isLoggedIn = false;
+    notifyListeners();
+  }
+
+  void updateProfile({required String name, required String email, required String phone}) {
+    _userName = name;
+    _userEmail = email;
+    _userPhone = phone;
     notifyListeners();
   }
 
@@ -412,44 +428,5 @@ class AppState extends ChangeNotifier {
     }
   }
 
-  // Admin Inventory Operations (CRUD)
-  void addProduct(Product product) {
-    _products.insert(0, product);
-    notifyListeners();
-  }
 
-  void editProduct(Product updated) {
-    final index = _products.indexWhere((p) => p.id == updated.id);
-    if (index >= 0) {
-      _products[index] = updated;
-      notifyListeners();
-    }
-  }
-
-  void deleteProduct(String productId) {
-    _products.removeWhere((p) => p.id == productId);
-    notifyListeners();
-  }
-
-  // Sample Admin Directory Customers
-  final List<CustomerModel> _customers = const [
-    CustomerModel(
-      id: 'c1',
-      name: 'Alex Vance',
-      email: 'alex@stickercollector.io',
-      avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop',
-      totalOrders: 12,
-      totalSpent: 420.50,
-    ),
-    CustomerModel(
-      id: 'c2',
-      name: 'Maya Lin',
-      email: 'maya.lin@artstation.io',
-      avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop',
-      totalOrders: 8,
-      totalSpent: 284.50,
-    ),
-  ];
-
-  List<CustomerModel> get customers => _customers;
 }

@@ -4,6 +4,10 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
 import '../../core/widgets/neo_brutal_widgets.dart';
 import '../../providers/app_state.dart';
+import '../customer/about_screen.dart';
+import '../customer/account_settings_screen.dart';
+import '../customer/contact_faq_screen.dart';
+import '../customer/order_history_screen.dart';
 
 class OwsxiNavigationDrawer extends StatelessWidget {
   final Function(Widget screen, String title)? onNavigate;
@@ -52,44 +56,6 @@ class OwsxiNavigationDrawer extends StatelessWidget {
                     'Nostalgic Art for Modern Souls',
                     style: AppTypography.labelSmall(color: AppColors.onPrimaryContainer),
                   ),
-                  const SizedBox(height: 12),
-                  // Role Switcher Toggle
-                  NeoBrutalContainer(
-                    backgroundColor: AppColors.surfaceContainerLowest,
-                    borderColor: AppColors.onSecondaryFixed,
-                    shadowColor: AppColors.onSecondaryFixed,
-                    shadowOffset: const Offset(2, 2),
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              appState.isAdminMode
-                                  ? Icons.admin_panel_settings
-                                  : Icons.shopping_bag_outlined,
-                              color: AppColors.primaryContainer,
-                              size: 20,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              appState.isAdminMode ? 'MERCHANT ADMIN' : 'CUSTOMER VIEW',
-                              style: AppTypography.labelBold(color: AppColors.onSurface),
-                            ),
-                          ],
-                        ),
-                        Switch(
-                          value: appState.isAdminMode,
-                          activeTrackColor: AppColors.primaryContainer,
-                          onChanged: (val) {
-                            appState.toggleAdminMode();
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -98,27 +64,53 @@ class OwsxiNavigationDrawer extends StatelessWidget {
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.symmetric(vertical: 8),
-                children: appState.isAdminMode
-                    ? _buildAdminItems(context, appState)
-                    : _buildCustomerItems(context, appState),
+                children: _buildCustomerItems(context, appState),
               ),
             ),
 
-            // Footer
+            // Footer / Log Out (Matching Stitch mobile_navigation_drawer spec)
             Container(
               padding: const EdgeInsets.all(16),
               decoration: const BoxDecoration(
                 border: Border(
-                  top: BorderSide(color: AppColors.onSecondaryFixed, width: 2),
+                  top: BorderSide(color: AppColors.onSecondaryFixed, width: 3),
                 ),
               ),
-              child: Row(
+              child: Column(
                 children: [
-                  const Icon(Icons.palette_outlined, color: AppColors.onSurfaceVariant),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Neo-Nostalgia Brutalism Theme',
-                    style: AppTypography.labelSmall(color: AppColors.onSurfaceVariant),
+                  if (appState.isLoggedIn) ...[
+                    NeoBrutalButton(
+                      label: 'LOG OUT',
+                      icon: Icons.logout,
+                      backgroundColor: AppColors.primaryContainer,
+                      textColor: AppColors.onPrimary,
+                      shadowColor: AppColors.onSecondaryFixed,
+                      fullWidth: true,
+                      onPressed: () {
+                        Navigator.pop(context);
+                        appState.logout();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: AppColors.onSecondaryFixed,
+                            content: Text(
+                              'LOGGED OUT SUCCESSFULLY',
+                              style: AppTypography.labelBold(color: AppColors.onPrimary),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+                  Row(
+                    children: [
+                      const Icon(Icons.palette_outlined, color: AppColors.onSurfaceVariant),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Neo-Nostalgia Brutalism Theme',
+                        style: AppTypography.labelSmall(color: AppColors.onSurfaceVariant),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -175,20 +167,39 @@ class OwsxiNavigationDrawer extends StatelessWidget {
         context: context,
         icon: Icons.person_outline,
         label: 'Account Dashboard',
-        selected: appState.currentCustomerIndex == 4,
+        selected: appState.currentCustomerIndex == 3,
         onTap: () {
-          appState.setCustomerIndex(4);
+          appState.setCustomerIndex(3);
           Navigator.pop(context);
         },
       ),
       const Divider(height: 24, thickness: 2, color: AppColors.onSecondaryFixed),
       _drawerTile(
         context: context,
+        icon: Icons.settings_outlined,
+        label: 'Account Settings',
+        onTap: () {
+          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const AccountSettingsScreen(),
+            ),
+          );
+        },
+      ),
+      _drawerTile(
+        context: context,
         icon: Icons.local_shipping_outlined,
         label: 'Order History & Tracking',
         onTap: () {
           Navigator.pop(context);
-          appState.setCustomerIndex(4);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const OrderHistoryScreen(),
+            ),
+          );
         },
       ),
       _drawerTile(
@@ -197,6 +208,12 @@ class OwsxiNavigationDrawer extends StatelessWidget {
         label: 'Contact Us & FAQ',
         onTap: () {
           Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const ContactFaqScreen(),
+            ),
+          );
         },
       ),
       _drawerTile(
@@ -205,61 +222,12 @@ class OwsxiNavigationDrawer extends StatelessWidget {
         label: 'About Owsxi Studio',
         onTap: () {
           Navigator.pop(context);
-        },
-      ),
-    ];
-  }
-
-  List<Widget> _buildAdminItems(BuildContext context, AppState appState) {
-    return [
-      _drawerTile(
-        context: context,
-        icon: Icons.dashboard_outlined,
-        label: 'Dashboard Overview',
-        selected: appState.currentAdminIndex == 0,
-        onTap: () {
-          appState.setAdminIndex(0);
-          Navigator.pop(context);
-        },
-      ),
-      _drawerTile(
-        context: context,
-        icon: Icons.inventory_2_outlined,
-        label: 'Inventory Management',
-        selected: appState.currentAdminIndex == 1,
-        onTap: () {
-          appState.setAdminIndex(1);
-          Navigator.pop(context);
-        },
-      ),
-      _drawerTile(
-        context: context,
-        icon: Icons.receipt_long_outlined,
-        label: 'Order Management (${appState.orders.length})',
-        selected: appState.currentAdminIndex == 2,
-        onTap: () {
-          appState.setAdminIndex(2);
-          Navigator.pop(context);
-        },
-      ),
-      _drawerTile(
-        context: context,
-        icon: Icons.people_alt_outlined,
-        label: 'Customer Directory',
-        selected: appState.currentAdminIndex == 3,
-        onTap: () {
-          appState.setAdminIndex(3);
-          Navigator.pop(context);
-        },
-      ),
-      _drawerTile(
-        context: context,
-        icon: Icons.settings_outlined,
-        label: 'Store Settings',
-        selected: appState.currentAdminIndex == 4,
-        onTap: () {
-          appState.setAdminIndex(4);
-          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const AboutScreen(),
+            ),
+          );
         },
       ),
     ];
@@ -296,3 +264,4 @@ class OwsxiNavigationDrawer extends StatelessWidget {
     );
   }
 }
+

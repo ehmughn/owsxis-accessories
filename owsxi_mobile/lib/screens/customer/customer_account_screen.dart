@@ -5,6 +5,9 @@ import '../../core/theme/app_typography.dart';
 import '../../core/widgets/neo_brutal_widgets.dart';
 import '../../providers/app_state.dart';
 import 'order_history_screen.dart';
+import 'account_settings_screen.dart';
+import 'customer_auth_screen.dart';
+import 'wishlist_screen.dart';
 
 class CustomerAccountScreen extends StatelessWidget {
   const CustomerAccountScreen({super.key});
@@ -12,6 +15,12 @@ class CustomerAccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appState = Provider.of<AppState>(context);
+
+    if (!appState.isLoggedIn) {
+      return CustomerAuthScreen(
+        onAuthenticated: () => appState.login(),
+      );
+    }
 
     return ListView(
       padding: const EdgeInsets.all(16),
@@ -39,10 +48,10 @@ class CustomerAccountScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
-                  'A',
-                  style: TextStyle(
+                  appState.userName.isNotEmpty ? appState.userName[0].toUpperCase() : 'A',
+                  style: const TextStyle(
                     fontSize: 42,
                     fontWeight: FontWeight.w900,
                     color: AppColors.onSurface,
@@ -52,7 +61,7 @@ class CustomerAccountScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              'HI, ALEX!',
+              'HI, ${appState.userName.toUpperCase()}!',
               style: AppTypography.headlineLargeMobile(
                 color: AppColors.onSurface,
               ),
@@ -67,7 +76,7 @@ class CustomerAccountScreen extends StatelessWidget {
 
         const SizedBox(height: 28),
 
-        // Dashboard Navigation Grid
+        // Dashboard Navigation Grid (Matching Stitch customer_account_dashboard_mobile spec)
         Text(
           'DASHBOARD',
           style: AppTypography.headlineMedium(color: AppColors.onSurface),
@@ -82,6 +91,7 @@ class CustomerAccountScreen extends StatelessWidget {
           mainAxisSpacing: 12,
           childAspectRatio: 1.25,
           children: [
+            // 1. My Orders
             GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -110,8 +120,16 @@ class CustomerAccountScreen extends StatelessWidget {
                 ),
               ),
             ),
+            // 2. Wishlist
             GestureDetector(
-              onTap: () => appState.setCustomerIndex(3),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const WishlistScreen(),
+                  ),
+                );
+              },
               child: NeoBrutalContainer(
                 backgroundColor: AppColors.surfaceContainer,
                 borderColor: AppColors.onSecondaryFixed,
@@ -131,8 +149,16 @@ class CustomerAccountScreen extends StatelessWidget {
                 ),
               ),
             ),
+            // 3. Settings
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const AccountSettingsScreen(),
+                  ),
+                );
+              },
               child: NeoBrutalContainer(
                 backgroundColor: AppColors.surfaceContainer,
                 borderColor: AppColors.onSecondaryFixed,
@@ -152,12 +178,24 @@ class CustomerAccountScreen extends StatelessWidget {
                 ),
               ),
             ),
+            // 4. Log Out
             GestureDetector(
-              onTap: () => appState.toggleAdminMode(),
+              onTap: () {
+                appState.logout();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: AppColors.onSecondaryFixed,
+                    content: Text(
+                      'LOGGED OUT SUCCESSFULLY',
+                      style: AppTypography.labelBold(color: AppColors.onPrimary),
+                    ),
+                  ),
+                );
+              },
               child: NeoBrutalContainer(
                 backgroundColor: AppColors.primaryContainer,
                 borderColor: AppColors.onSecondaryFixed,
-                shadowColor: AppColors.primaryContainer,
+                shadowColor: AppColors.onSecondaryFixed,
                 shadowOffset: const Offset(4, 4),
                 padding: const EdgeInsets.all(12),
                 child: Column(
@@ -166,7 +204,7 @@ class CustomerAccountScreen extends StatelessWidget {
                     const Icon(Icons.logout, size: 32, color: AppColors.onPrimary),
                     const SizedBox(height: 6),
                     Text(
-                      'ADMIN PORTAL',
+                      'LOG OUT',
                       style: AppTypography.labelBold(color: AppColors.onPrimary),
                     ),
                   ],
@@ -263,3 +301,4 @@ class CustomerAccountScreen extends StatelessWidget {
     );
   }
 }
+
