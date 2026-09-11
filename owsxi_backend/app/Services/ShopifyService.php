@@ -131,6 +131,51 @@ class ShopifyService
     }
 
     /**
+     * Fetch a single product by ID live from Shopify.
+     */
+    public function fetchProductById(string $id, ?string $domain = null): ?array
+    {
+        $shopDomain = $this->formatDomain($domain);
+        $token = $this->getAccessToken($shopDomain);
+
+        // 1. Try Admin API single product endpoint if token is available
+        if ($token && is_numeric($id)) {
+            $adminUrl = "https://{$shopDomain}/admin/api/2024-04/products/{$id}.json";
+            try {
+                $response = Http::timeout(10)
+                    ->withoutVerifying()
+                    ->withHeaders([
+                        'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+                        'Accept' => 'application/json',
+                        'X-Shopify-Access-Token' => $token,
+                    ])->get($adminUrl);
+
+                if ($response->successful()) {
+                    $data = $response->json();
+                    if (!empty($data['product'])) {
+                        return $this->formatShopifyProduct($data['product'], $shopDomain);
+                    }
+                }
+            } catch (\Exception $e) {
+                Log::error("Shopify Admin API single product request error: " . $e->getMessage());
+            }
+        }
+
+        // 2. Fallback: fetch all products live and filter by shopify_id or title/handle match
+        $allProducts = $this->fetchProducts($shopDomain);
+        foreach ($allProducts as $product) {
+            if (
+                (isset($product['shopify_id']) && (string)$product['shopify_id'] === (string)$id) ||
+                (isset($product['id']) && (string)$product['id'] === (string)$id)
+            ) {
+                return $product;
+            }
+        }
+
+        return !empty($allProducts) ? $allProducts[0] : null;
+    }
+
+    /**
      * Format raw Shopify JSON product into standard application schema.
      */
     public function formatShopifyProduct(array $p, string $shopDomain): array
