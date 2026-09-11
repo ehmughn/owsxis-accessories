@@ -24,10 +24,58 @@ class CatalogScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'SHOP ALL CATALOG',
-                style: AppTypography.headlineMedium(color: AppColors.onSurface),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'SHOP ALL CATALOG',
+                      style: AppTypography.headlineMedium(color: AppColors.onSurface),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => _showShopifySyncDialog(context, appState),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: appState.isBackendConnected ? AppColors.primaryContainer : AppColors.secondaryContainer,
+                        border: Border.all(color: AppColors.onSecondaryFixed, width: 2),
+                        boxShadow: const [BoxShadow(color: AppColors.onSecondaryFixed, offset: Offset(2, 2))],
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            appState.isBackendConnected ? Icons.cloud_done : Icons.cloud_download,
+                            size: 16,
+                            color: AppColors.onPrimary,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
+              if (appState.backendError != null) ...[
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  color: AppColors.errorContainer,
+                  child: Row(
+                    children: [
+                      const Icon(Icons.info_outline, size: 16, color: AppColors.onError),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          appState.backendError!,
+                          style: AppTypography.labelSmall(color: AppColors.onError),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
               const SizedBox(height: 12),
               // Search Input
               NeoBrutalTextField(
@@ -261,6 +309,63 @@ class CatalogScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showShopifySyncDialog(BuildContext context, AppState appState) {
+    final controller = TextEditingController(text: appState.currentShopDomain);
+    showDialog(
+      context: context,
+      builder: (dialogCtx) => AlertDialog(
+        backgroundColor: AppColors.surfaceContainerLowest,
+        shape: const RoundedRectangleBorder(
+          side: BorderSide(color: AppColors.onSecondaryFixed, width: 3),
+        ),
+        title: Text(
+          'CONNECT SHOPIFY STORE',
+          style: AppTypography.headlineMedium(color: AppColors.onSurface),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Enter any Shopify website domain (e.g. shirtwascash.com or owsxi.myshopify.com) to fetch all its products via Laravel backend:',
+              style: AppTypography.bodySmall(color: AppColors.onSurfaceVariant),
+            ),
+            const SizedBox(height: 12),
+            NeoBrutalTextField(
+              hint: 'e.g. shirtwascash.com',
+              controller: controller,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogCtx),
+            child: Text('CANCEL', style: AppTypography.labelBold(color: AppColors.outline)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryContainer,
+              foregroundColor: AppColors.onPrimary,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: AppColors.onSecondaryFixed, width: 2),
+                borderRadius: BorderRadius.zero,
+              ),
+            ),
+            onPressed: () {
+              Navigator.pop(dialogCtx);
+              final domain = controller.text.trim();
+              if (domain.isNotEmpty) {
+                appState.fetchShopifyStore(domain);
+              }
+            },
+            child: Text('FETCH PRODUCTS', style: AppTypography.labelBold(color: AppColors.onPrimary)),
+          ),
+        ],
       ),
     );
   }

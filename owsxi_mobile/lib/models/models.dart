@@ -52,6 +52,47 @@ class Product {
       variants: variants ?? this.variants,
     );
   }
+
+  factory Product.fromJson(Map<String, dynamic> json) {
+    List<String> parsedVariants = ['Standard'];
+    if (json['variants'] != null) {
+      if (json['variants'] is List) {
+        parsedVariants = (json['variants'] as List).map((v) => v.toString()).toList();
+      } else if (json['variants'] is String) {
+        parsedVariants = [json['variants'].toString()];
+      }
+    }
+
+    return Product(
+      id: json['id']?.toString() ?? json['shopify_id']?.toString() ?? 'p_${DateTime.now().millisecondsSinceEpoch}',
+      title: json['title']?.toString() ?? 'Untitled Product',
+      description: json['description']?.toString() ?? '',
+      price: (json['price'] as num?)?.toDouble() ?? 0.0,
+      category: json['category']?.toString() ?? 'General',
+      tag: json['tag']?.toString() ?? 'Featured',
+      imageUrl: json['image_url']?.toString() ?? json['imageUrl']?.toString() ?? 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=500',
+      inStock: json['in_stock'] ?? json['inStock'] ?? true,
+      stockQuantity: (json['stock_quantity'] ?? json['stockQuantity'] as num?)?.toInt() ?? 25,
+      rating: (json['rating'] as num?)?.toDouble() ?? 4.9,
+      variants: parsedVariants,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'price': price,
+      'category': category,
+      'tag': tag,
+      'image_url': imageUrl,
+      'in_stock': inStock,
+      'stock_quantity': stockQuantity,
+      'rating': rating,
+      'variants': variants,
+    };
+  }
 }
 
 class CartItem {
