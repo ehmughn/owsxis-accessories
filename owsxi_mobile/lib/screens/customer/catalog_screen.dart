@@ -84,14 +84,13 @@ class CatalogScreen extends StatelessWidget {
                 onChanged: (val) => appState.setSearchQuery(val),
               ),
               const SizedBox(height: 14),
-              // Category filter pills
+              // Dynamic Category filter pills based on products fetched from API
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 physics: const BouncingScrollPhysics(),
                 child: Row(
-                  children: ['All', 'Sticker', 'Pin', 'Print', 'Charm', 'Apparel']
-                      .map((cat) {
-                    final isSelected = appState.selectedCategory == cat;
+                  children: appState.availableCategories.map((cat) {
+                    final isSelected = appState.selectedCategory.toLowerCase() == cat.toLowerCase();
                     return Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: GestureDetector(

@@ -132,6 +132,17 @@ class AppState extends ChangeNotifier {
   String get searchQuery => _searchQuery;
   String get selectedCategory => _selectedCategory;
 
+  List<String> get availableCategories {
+    final categoriesSet = <String>{'All'};
+    for (final p in _products) {
+      final cat = p.category.trim();
+      if (cat.isNotEmpty) {
+        categoriesSet.add(cat);
+      }
+    }
+    return categoriesSet.toList();
+  }
+
   void setSearchQuery(String query) {
     _searchQuery = query;
     notifyListeners();
@@ -147,6 +158,7 @@ class AppState extends ChangeNotifier {
       final matchesSearch = p.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
           p.description.toLowerCase().contains(_searchQuery.toLowerCase());
       final matchesCategory = _selectedCategory == 'All' ||
+          p.category.trim().toLowerCase() == _selectedCategory.trim().toLowerCase() ||
           p.category.toLowerCase().contains(_selectedCategory.toLowerCase());
       return matchesSearch && matchesCategory;
     }).toList();
