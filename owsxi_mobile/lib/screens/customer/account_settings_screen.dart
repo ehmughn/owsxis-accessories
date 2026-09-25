@@ -35,6 +35,97 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
     super.dispose();
   }
 
+  void _showEditAddressDialog(BuildContext context, AppState appState) {
+    final addr = appState.userAddress;
+    final address1Controller = TextEditingController(text: addr['address1'] ?? '');
+    final address2Controller = TextEditingController(text: addr['address2'] ?? '');
+    final cityController = TextEditingController(text: addr['city'] ?? '');
+    final provinceController = TextEditingController(text: addr['province'] ?? '');
+    final zipController = TextEditingController(text: addr['zip'] ?? '');
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppColors.surfaceContainerLowest,
+        shape: RoundedRectangleBorder(
+          side: const BorderSide(color: AppColors.onSecondaryFixed, width: 3),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        title: Text(
+          'EDIT SHIPPING ADDRESS',
+          style: AppTypography.headlineMedium(color: AppColors.onSurface),
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              NeoBrutalTextField(
+                label: 'Street Address',
+                controller: address1Controller,
+              ),
+              const SizedBox(height: 10),
+              NeoBrutalTextField(
+                label: 'Apartment / Suite (Optional)',
+                controller: address2Controller,
+              ),
+              const SizedBox(height: 10),
+              NeoBrutalTextField(
+                label: 'City',
+                controller: cityController,
+              ),
+              const SizedBox(height: 10),
+              NeoBrutalTextField(
+                label: 'Province / State',
+                controller: provinceController,
+              ),
+              const SizedBox(height: 10),
+              NeoBrutalTextField(
+                label: 'ZIP Code',
+                controller: zipController,
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(
+              'CANCEL',
+              style: AppTypography.labelBold(color: AppColors.outline),
+            ),
+          ),
+          NeoBrutalButton(
+            label: 'SAVE',
+            backgroundColor: AppColors.primaryContainer,
+            textColor: AppColors.onPrimary,
+            shadowColor: AppColors.onSecondaryFixed,
+            onPressed: () async {
+              await appState.updateCustomerAddress(
+                address1: address1Controller.text.trim(),
+                address2: address2Controller.text.trim(),
+                city: cityController.text.trim(),
+                province: provinceController.text.trim(),
+                zip: zipController.text.trim(),
+              );
+              if (ctx.mounted) {
+                Navigator.pop(ctx);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: AppColors.onSecondaryFixed,
+                    content: Text(
+                      'ADDRESS UPDATED SUCCESSFULLY!',
+                      style: AppTypography.labelBold(color: AppColors.onPrimary),
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final appState = Provider.of<AppState>(context);
@@ -87,14 +178,14 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                   const SizedBox(height: 12),
                   NeoBrutalTextField(
                     label: 'Mobile Number',
-                    hint: '+1 555-0000',
+                    hint: 'Mobile number',
                     controller: _phoneController,
                     prefixIcon: Icons.phone_outlined,
                   ),
                   const SizedBox(height: 12),
                   NeoBrutalTextField(
                     label: 'Email Address',
-                    hint: 'you@domain.com',
+                    hint: 'Your email address',
                     controller: _emailController,
                     prefixIcon: Icons.email_outlined,
                   ),
@@ -130,35 +221,9 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
             const SizedBox(height: 24),
 
             // Saved Addresses
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'SAVED ADDRESSES',
-                  style: AppTypography.headlineMedium(color: AppColors.onSurface),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: AppColors.onSecondaryFixed,
-                        content: Text(
-                          'ADD NEW ADDRESS FORM OPENED',
-                          style: AppTypography.labelBold(color: AppColors.onPrimary),
-                        ),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryContainer,
-                      border: Border.all(color: AppColors.onSecondaryFixed, width: 2),
-                    ),
-                    child: const Icon(Icons.add, color: AppColors.onPrimary, size: 20),
-                  ),
-                ),
-              ],
+            Text(
+              'SAVED ADDRESSES',
+              style: AppTypography.headlineMedium(color: AppColors.onSurface),
             ),
             const SizedBox(height: 12),
             NeoBrutalContainer(
@@ -176,12 +241,12 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'HOME (DEFAULT)',
+                          'DEFAULT SHIPPING ADDRESS',
                           style: AppTypography.labelBold(color: AppColors.onSecondaryContainer),
                         ),
-                        const SizedBox(height: 2),
+                        const SizedBox(height: 4),
                         Text(
-                          '123 Brutal St, Apt 4B\nNeo City, 90210',
+                          appState.formattedAddress,
                           style: AppTypography.bodySmall(color: AppColors.onSecondaryContainer),
                         ),
                       ],
@@ -189,108 +254,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                   ),
                   IconButton(
                     icon: const Icon(Icons.edit_outlined, color: AppColors.onSecondaryContainer),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            // Account Security
-            Text(
-              'ACCOUNT SECURITY',
-              style: AppTypography.headlineMedium(color: AppColors.onSurface),
-            ),
-            const SizedBox(height: 12),
-            NeoBrutalContainer(
-              backgroundColor: AppColors.surfaceContainerLowest,
-              borderColor: AppColors.onSecondaryFixed,
-              shadowColor: AppColors.onSecondaryFixed,
-              shadowOffset: const Offset(4, 4),
-              padding: const EdgeInsets.all(14),
-              child: Column(
-                children: [
-                  ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    leading: const Icon(Icons.lock_reset, color: AppColors.onSurface),
-                    title: Text(
-                      'CHANGE PASSWORD',
-                      style: AppTypography.labelBold(color: AppColors.onSurface),
-                    ),
-                    trailing: const Icon(Icons.chevron_right, color: AppColors.onSurface),
-                    onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          backgroundColor: AppColors.onSecondaryFixed,
-                          content: Text(
-                            'PASSWORD RESET LINK SENT TO YOUR EMAIL',
-                            style: AppTypography.labelBold(color: AppColors.onPrimary),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  const Divider(height: 16, thickness: 2, color: AppColors.onSecondaryFixed),
-                  SwitchListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(
-                      'TWO-FACTOR AUTH (2FA)',
-                      style: AppTypography.labelBold(color: AppColors.onSurface),
-                    ),
-                    subtitle: Text(
-                      _twoFactorEnabled ? 'Enabled (SMS/Authenticator)' : 'Disabled',
-                      style: AppTypography.bodySmall(
-                        color: _twoFactorEnabled ? AppColors.tertiary : AppColors.error,
-                      ),
-                    ),
-                    value: _twoFactorEnabled,
-                    activeTrackColor: AppColors.primaryContainer,
-                    onChanged: (val) {
-                      setState(() => _twoFactorEnabled = val);
-                    },
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            // Linked Wallets
-            Text(
-              'LINKED WALLETS',
-              style: AppTypography.headlineMedium(color: AppColors.onSurface),
-            ),
-            const SizedBox(height: 12),
-            NeoBrutalContainer(
-              backgroundColor: AppColors.tertiaryFixed,
-              borderColor: AppColors.onSecondaryFixed,
-              shadowColor: AppColors.onSecondaryFixed,
-              shadowOffset: const Offset(4, 4),
-              padding: const EdgeInsets.all(14),
-              child: Row(
-                children: [
-                  const Icon(Icons.account_balance_wallet_outlined, color: AppColors.onTertiaryFixed, size: 28),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'GCASH WALLET',
-                          style: AppTypography.labelBold(color: AppColors.onTertiaryFixed),
-                        ),
-                        Text(
-                          'Linked • ***1234',
-                          style: AppTypography.bodySmall(color: AppColors.onTertiaryFixed),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const NeoBrutalBadge(
-                    label: 'ACTIVE',
-                    backgroundColor: AppColors.primaryContainer,
-                    textColor: AppColors.onPrimary,
+                    onPressed: () => _showEditAddressDialog(context, appState),
                   ),
                 ],
               ),

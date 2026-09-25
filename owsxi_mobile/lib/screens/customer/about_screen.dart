@@ -63,45 +63,6 @@ class AboutScreen extends StatelessWidget {
               style: AppTypography.bodyLarge(color: AppColors.onSurfaceVariant),
             ),
 
-            const SizedBox(height: 24),
-
-            NeoBrutalContainer(
-              backgroundColor: AppColors.secondaryFixed,
-              borderColor: AppColors.onSecondaryFixed,
-              shadowColor: AppColors.onSecondaryFixed,
-              shadowOffset: const Offset(4, 4),
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.auto_awesome,
-                    size: 36,
-                    color: AppColors.onSecondaryFixed,
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'NEO-NOSTALGIA BRUTALISM',
-                          style: AppTypography.labelBold(
-                            color: AppColors.onSecondaryFixed,
-                          ),
-                        ),
-                        Text(
-                          'Bold 4px borders, hard shadows, high contrast palettes, and zero rounded corners.',
-                          style: AppTypography.bodySmall(
-                            color: AppColors.onSecondaryFixed,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
             const SizedBox(height: 32),
           ],
         ),

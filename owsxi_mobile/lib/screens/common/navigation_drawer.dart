@@ -102,16 +102,6 @@ class OwsxiNavigationDrawer extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                   ],
-                  Row(
-                    children: [
-                      const Icon(Icons.palette_outlined, color: AppColors.onSurfaceVariant),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Neo-Nostalgia Brutalism Theme',
-                        style: AppTypography.labelSmall(color: AppColors.onSurfaceVariant),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
