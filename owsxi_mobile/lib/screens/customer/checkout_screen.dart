@@ -14,21 +14,91 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  final _nameController = TextEditingController(text: 'Eman Studio');
-  final _addressController =
-      TextEditingController(text: '742 Evergreen Terrace, Sector 7G');
-  final _cityController = TextEditingController(text: 'Springfield');
-  final _zipController = TextEditingController(text: '97477');
+  final _nameController = TextEditingController();
+  final _address1Controller = TextEditingController();
+  final _address2Controller = TextEditingController();
+  final _cityController = TextEditingController();
+  final _provinceController = TextEditingController();
+  final _zipController = TextEditingController();
 
-  String _paymentMethod = 'Credit Card';
+  String _deliveryMethod = 'Shipping';
+  final String _paymentMethod = 'Cash on Delivery';
+  bool _isSubmitting = false;
+  bool _initializedAddress = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initializedAddress) {
+      _initializedAddress = true;
+      final appState = Provider.of<AppState>(context, listen: false);
+
+      _nameController.text = appState.userName.isNotEmpty ? appState.userName : 'Customer';
+      final addr = appState.userAddress;
+      _address1Controller.text = addr['address1'] ?? '';
+      _address2Controller.text = addr['address2'] ?? '';
+      _cityController.text = addr['city'] ?? '';
+      _provinceController.text = addr['province'] ?? '';
+      _zipController.text = addr['zip'] ?? '';
+    }
+  }
 
   @override
   void dispose() {
     _nameController.dispose();
-    _addressController.dispose();
+    _address1Controller.dispose();
+    _address2Controller.dispose();
     _cityController.dispose();
+    _provinceController.dispose();
     _zipController.dispose();
     super.dispose();
+  }
+
+  Future<void> _handlePlaceOrder(AppState appState) async {
+    if (_nameController.text.trim().isEmpty ||
+        _address1Controller.text.trim().isEmpty ||
+        _cityController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please complete your full name, street address, and city.'),
+          backgroundColor: AppColors.errorContainer,
+        ),
+      );
+      return;
+    }
+
+    setState(() => _isSubmitting = true);
+
+    final result = await appState.placeShopifyOrder(
+      name: _nameController.text.trim(),
+      address1: _address1Controller.text.trim(),
+      address2: _address2Controller.text.trim(),
+      city: _cityController.text.trim(),
+      province: _provinceController.text.trim(),
+      zip: _zipController.text.trim(),
+      paymentMethod: _paymentMethod,
+      deliveryMethod: _deliveryMethod,
+    );
+
+    if (!mounted) return;
+    setState(() => _isSubmitting = false);
+
+    if (result['success'] == true) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const OrderSuccessScreen(),
+        ),
+      );
+    } else {
+      final msg = result['message']?.toString() ?? 'Failed to place order.';
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(msg),
+          backgroundColor: AppColors.errorContainer,
+        ),
+      );
+    }
   }
 
   @override
@@ -46,7 +116,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           child: Container(color: AppColors.onSecondaryFixed, height: 4),
         ),
         title: Text(
-          'SECURE CHECKOUT',
+          'CHECKOUT',
           style: AppTypography.headlineMedium(color: AppColors.onSurface),
         ),
       ),
@@ -56,9 +126,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Delivery Method Section
+            _buildDeliveryMethodSection(),
+
+            const SizedBox(height: 28),
+
             // Shipping Address Section
             Text(
-              '1. SHIPPING ADDRESS',
+              '2. SHIPPING ADDRESS',
               style: AppTypography.headlineMedium(color: AppColors.onSurface),
             ),
             const SizedBox(height: 12),
@@ -69,13 +144,17 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             const SizedBox(height: 12),
             NeoBrutalTextField(
               label: 'Street Address',
-              controller: _addressController,
+              controller: _address1Controller,
+            ),
+            const SizedBox(height: 12),
+            NeoBrutalTextField(
+              label: 'Apartment / Suite (Optional)',
+              controller: _address2Controller,
             ),
             const SizedBox(height: 12),
             Row(
               children: [
                 Expanded(
-                  flex: 2,
                   child: NeoBrutalTextField(
                     label: 'City',
                     controller: _cityController,
@@ -83,28 +162,30 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  flex: 1,
                   child: NeoBrutalTextField(
-                    label: 'ZIP Code',
-                    controller: _zipController,
+                    label: 'Province / State',
+                    controller: _provinceController,
                   ),
                 ),
               ],
+            ),
+            const SizedBox(height: 12),
+            NeoBrutalTextField(
+              label: 'ZIP Code',
+              controller: _zipController,
             ),
 
             const SizedBox(height: 28),
 
             // Payment Method Section
             Text(
-              '2. PAYMENT METHOD',
+              '3. PAYMENT METHOD',
               style: AppTypography.headlineMedium(color: AppColors.onSurface),
             ),
             const SizedBox(height: 12),
-            _paymentOptionTile('Credit Card', Icons.credit_card),
-            const SizedBox(height: 8),
-            _paymentOptionTile('Apple Pay / Google Pay', Icons.phone_iphone),
-            const SizedBox(height: 8),
-            _paymentOptionTile('Retro Pop Cash Card', Icons.card_giftcard),
+            _buildCashOnDeliveryTile(),
+            const SizedBox(height: 10),
+            _buildDisabledPayMongoTile(),
 
             const SizedBox(height: 28),
 
@@ -131,7 +212,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         style: AppTypography.bodyMedium(color: AppColors.onSurfaceVariant),
                       ),
                       Text(
-                        '\$${appState.cartTotal.toStringAsFixed(2)}',
+                        '₱${appState.cartTotal.toStringAsFixed(2)}',
                         style: AppTypography.headlineMedium(
                           color: AppColors.primaryContainer,
                         ),
@@ -145,26 +226,23 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             const SizedBox(height: 32),
 
             // Place Order CTA Button
-            NeoBrutalButton(
-              label: 'PLACE ORDER NOW',
-              icon: Icons.check_circle_outline,
-              backgroundColor: AppColors.primaryContainer,
-              textColor: AppColors.onPrimary,
-              shadowColor: AppColors.onSecondaryFixed,
-              fullWidth: true,
-              onPressed: () {
-                final fullAddress =
-                    '${_addressController.text}, ${_cityController.text} ${_zipController.text}';
-                appState.checkoutCurrentCart(fullAddress);
-
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const OrderSuccessScreen(),
-                  ),
-                );
-              },
-            ),
+            if (_isSubmitting)
+              const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: CircularProgressIndicator(color: AppColors.primaryContainer),
+                ),
+              )
+            else
+              NeoBrutalButton(
+                label: 'PLACE ORDER NOW',
+                icon: Icons.check_circle_outline,
+                backgroundColor: AppColors.primaryContainer,
+                textColor: AppColors.onPrimary,
+                shadowColor: AppColors.onSecondaryFixed,
+                fullWidth: true,
+                onPressed: () => _handlePlaceOrder(appState),
+              ),
 
             const SizedBox(height: 32),
           ],
@@ -173,42 +251,175 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
-  Widget _paymentOptionTile(String title, IconData icon) {
-    final isSelected = _paymentMethod == title;
+  Widget _buildDeliveryMethodSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '1. DELIVERY METHOD',
+          style: AppTypography.headlineMedium(color: AppColors.onSurface),
+        ),
+        const SizedBox(height: 12),
+        _buildDeliveryOptionTile(
+          title: 'SHIPPING',
+          subtitle: 'Standard delivery to your shipping address',
+          icon: Icons.local_shipping_outlined,
+          value: 'Shipping',
+        ),
+        const SizedBox(height: 10),
+        _buildDeliveryOptionTile(
+          title: 'PICKUP IN STORE',
+          subtitle: 'Collect directly from physical store location',
+          icon: Icons.storefront_outlined,
+          value: 'Pickup in store',
+        ),
+      ],
+    );
+  }
 
-    return GestureDetector(
-      onTap: () => setState(() => _paymentMethod = title),
+  Widget _buildDeliveryOptionTile({
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required String value,
+  }) {
+    final isSelected = _deliveryMethod == value;
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _deliveryMethod = value;
+        });
+      },
+      borderRadius: BorderRadius.circular(4),
       child: NeoBrutalContainer(
-        backgroundColor: isSelected
-            ? AppColors.secondaryFixed
-            : AppColors.surfaceContainerLowest,
-        borderColor: AppColors.onSecondaryFixed,
-        shadowColor: AppColors.onSecondaryFixed,
-        shadowOffset: const Offset(2.5, 2.5),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        backgroundColor: isSelected ? AppColors.secondaryFixed : AppColors.surfaceContainerHigh,
+        borderColor: isSelected ? AppColors.onSecondaryFixed : AppColors.outlineVariant,
+        shadowColor: isSelected ? AppColors.onSecondaryFixed : Colors.transparent,
+        shadowOffset: isSelected ? const Offset(2.5, 2.5) : Offset.zero,
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
         child: Row(
           children: [
             Icon(
               icon,
-              color: isSelected
-                  ? AppColors.onSecondaryFixed
-                  : AppColors.onSurfaceVariant,
+              color: isSelected ? AppColors.onSecondaryFixed : AppColors.outline,
+              size: 24,
             ),
             const SizedBox(width: 12),
-            Text(
-              title.toUpperCase(),
-              style: AppTypography.labelBold(
-                color: isSelected
-                    ? AppColors.onSecondaryFixed
-                    : AppColors.onSurface,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: AppTypography.labelBold(
+                      color: isSelected ? AppColors.onSecondaryFixed : AppColors.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: AppTypography.bodySmall(
+                      color: isSelected ? AppColors.onSecondaryFixed : AppColors.onSurfaceVariant,
+                    ),
+                  ),
+                ],
               ),
             ),
-            const Spacer(),
             Icon(
-              isSelected
-                  ? Icons.radio_button_checked
-                  : Icons.radio_button_unchecked,
-              color: AppColors.onSecondaryFixed,
+              isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
+              color: isSelected ? AppColors.onSecondaryFixed : AppColors.outline,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCashOnDeliveryTile() {
+    return NeoBrutalContainer(
+      backgroundColor: AppColors.secondaryFixed,
+      borderColor: AppColors.onSecondaryFixed,
+      shadowColor: AppColors.onSecondaryFixed,
+      shadowOffset: const Offset(2.5, 2.5),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+      child: Row(
+        children: [
+          const Icon(
+            Icons.payments_outlined,
+            color: AppColors.onSecondaryFixed,
+            size: 24,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'CASH ON DELIVERY',
+                  style: AppTypography.labelBold(
+                    color: AppColors.onSecondaryFixed,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'Pay upon package delivery',
+                  style: AppTypography.bodySmall(
+                    color: AppColors.onSecondaryFixed,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Icon(
+            Icons.radio_button_checked,
+            color: AppColors.onSecondaryFixed,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDisabledPayMongoTile() {
+    return Opacity(
+      opacity: 0.55,
+      child: NeoBrutalContainer(
+        backgroundColor: AppColors.surfaceContainerHigh,
+        borderColor: AppColors.outlineVariant,
+        shadowColor: Colors.transparent,
+        shadowOffset: Offset.zero,
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.credit_card_off_outlined,
+              color: AppColors.outline,
+              size: 24,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'SECURE PAYMENT VIA PAYMONGO',
+                    style: AppTypography.labelBold(
+                      color: AppColors.outline,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    'Disabled / Unavailable',
+                    style: AppTypography.bodySmall(
+                      color: AppColors.outline,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const NeoBrutalBadge(
+              label: 'DISABLED',
+              backgroundColor: AppColors.surfaceContainerLowest,
+              textColor: AppColors.outline,
             ),
           ],
         ),

@@ -138,7 +138,7 @@ class OwsxiMainShell extends StatelessWidget {
           ),
         ),
         child: BottomNavigationBar(
-          currentIndex: appState.currentCustomerIndex,
+          currentIndex: appState.currentCustomerIndex.clamp(0, 3),
           onTap: (index) {
             appState.setCustomerIndex(index);
           },

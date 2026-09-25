@@ -5,6 +5,7 @@ import '../../core/theme/app_typography.dart';
 import '../../core/widgets/neo_brutal_widgets.dart';
 import '../../providers/app_state.dart';
 import 'checkout_screen.dart';
+import 'customer_auth_screen.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -39,7 +40,7 @@ class _CartScreenState extends State<CartScreen> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'YOUR SCRAPBOOK IS EMPTY',
+                  'YOUR CART IS EMPTY',
                   style: AppTypography.headlineMedium(
                     color: AppColors.onSurface,
                   ),
@@ -71,7 +72,7 @@ class _CartScreenState extends State<CartScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'YOUR SCRAPBOOK',
+                      'YOUR CART',
                       style: AppTypography.headlineMedium(color: AppColors.onSurface),
                     ),
                     NeoBrutalBadge(
@@ -102,7 +103,9 @@ class _CartScreenState extends State<CartScreen> {
                         children: [
                           ClipRRect(
                             child: Image.network(
-                              item.product.imageUrl,
+                              item.variantImageUrl?.isNotEmpty == true
+                                  ? item.variantImageUrl!
+                                  : item.product.imageUrl,
                               width: 80,
                               height: 80,
                               fit: BoxFit.cover,
@@ -119,10 +122,21 @@ class _CartScreenState extends State<CartScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                NeoBrutalBadge(
-                                  label: item.product.tag,
-                                  backgroundColor: AppColors.onSecondaryFixed,
-                                  textColor: AppColors.tertiaryFixed,
+                                Wrap(
+                                  spacing: 6,
+                                  runSpacing: 4,
+                                  children: [
+                                    NeoBrutalBadge(
+                                      label: item.product.tag,
+                                      backgroundColor: AppColors.onSecondaryFixed,
+                                      textColor: AppColors.tertiaryFixed,
+                                    ),
+                                    NeoBrutalBadge(
+                                      label: item.selectedVariant,
+                                      backgroundColor: AppColors.secondaryFixed,
+                                      textColor: AppColors.onSecondaryFixed,
+                                    ),
+                                  ],
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
@@ -157,7 +171,7 @@ class _CartScreenState extends State<CartScreen> {
                                 onPressed: () => appState.removeFromCart(index),
                               ),
                               Text(
-                                '\$${item.product.price.toStringAsFixed(2)}',
+                                '₱${item.unitPrice.toStringAsFixed(2)}',
                                 style: AppTypography.labelBold(
                                   color: AppColors.onSecondaryFixed,
                                 ),
@@ -268,15 +282,30 @@ class _CartScreenState extends State<CartScreen> {
 
                 const SizedBox(height: 24),
 
-                // Secure Checkout CTA
+                // Checkout CTA
                 NeoBrutalButton(
-                  label: 'SECURE CHECKOUT',
-                  icon: Icons.lock_outline,
+                  label: 'CHECKOUT',
+                  icon: Icons.shopping_bag_outlined,
                   backgroundColor: AppColors.primaryContainer,
                   textColor: AppColors.onPrimary,
                   shadowColor: AppColors.onSecondaryFixed,
                   fullWidth: true,
-                  onPressed: () {
+                  onPressed: () async {
+                    if (!appState.isLoggedIn) {
+                      final authenticated = await Navigator.push<bool>(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const CustomerAuthScreen(
+                            message: 'Please sign in to your Shopify account to proceed to checkout.',
+                          ),
+                        ),
+                      );
+                      if (authenticated != true && !appState.isLoggedIn) {
+                        return;
+                      }
+                    }
+
+                    if (!context.mounted) return;
                     Navigator.push(
                       context,
                       MaterialPageRoute(

@@ -291,19 +291,34 @@ class StorefrontHomeScreen extends StatelessWidget {
                       shadowColor: AppColors.onSecondaryFixed,
                       fullWidth: true,
                       onPressed: () {
-                        appState.addToCart(product);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: AppColors.onSecondaryFixed,
-                            content: Text(
-                              'ADDED ${product.title} TO CART!',
-                              style: AppTypography.labelBold(
-                                color: AppColors.onPrimary,
+                        final added = appState.addToCart(product);
+                        if (added) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: AppColors.onSecondaryFixed,
+                              content: Text(
+                                'ADDED ${product.title} TO CART!',
+                                style: AppTypography.labelBold(
+                                  color: AppColors.onPrimary,
+                                ),
                               ),
+                              duration: const Duration(seconds: 1),
                             ),
-                            duration: const Duration(seconds: 1),
-                          ),
-                        );
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: AppColors.onSecondaryFixed,
+                              content: Text(
+                                'THIS ITEM IS OUT OF STOCK AND CANNOT BE ADDED TO CART.',
+                                style: AppTypography.labelBold(
+                                  color: AppColors.onPrimary,
+                                ),
+                              ),
+                              duration: const Duration(seconds: 1),
+                            ),
+                          );
+                        }
                       },
                     ),
                   ],

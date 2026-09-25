@@ -146,23 +146,14 @@ class OwsxiNavigationDrawer extends StatelessWidget {
       _drawerTile(
         context: context,
         icon: Icons.shopping_cart_outlined,
-        label: 'Scrapbook Cart (${appState.cartItems.length})',
+        label: 'Cart (${appState.cartItems.length})',
         selected: appState.currentCustomerIndex == 2,
         onTap: () {
           appState.setCustomerIndex(2);
           Navigator.pop(context);
         },
       ),
-      _drawerTile(
-        context: context,
-        icon: Icons.favorite_border,
-        label: 'My Wishlist (${appState.wishlistProductIds.length})',
-        selected: appState.currentCustomerIndex == 3,
-        onTap: () {
-          appState.setCustomerIndex(3);
-          Navigator.pop(context);
-        },
-      ),
+
       _drawerTile(
         context: context,
         icon: Icons.person_outline,

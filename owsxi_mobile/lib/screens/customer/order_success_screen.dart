@@ -120,7 +120,7 @@ class OrderSuccessScreen extends StatelessWidget {
                 fullWidth: true,
                 onPressed: () {
                   Navigator.pop(context);
-                  appState.setCustomerIndex(4); // Open Account / Orders
+                  appState.setCustomerIndex(3); // Open Account / Orders
                 },
               ),
               const SizedBox(height: 12),

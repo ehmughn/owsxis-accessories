@@ -43,8 +43,72 @@ class OrderHistoryScreen extends StatelessWidget {
     );
   }
 
+  void _showCancelDialog(BuildContext context, OrderModel order) {
+    final appState = Provider.of<AppState>(context, listen: false);
+    final orderNum = order.trackingNumber.isNotEmpty
+        ? order.trackingNumber
+        : (order.id.startsWith('#') ? order.id : '#${order.id}');
+    final displayOrderNum = orderNum.startsWith('#') ? orderNum : '#$orderNum';
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppColors.background,
+        shape: const RoundedRectangleBorder(
+          side: BorderSide(color: AppColors.onSecondaryFixed, width: 3),
+        ),
+        title: Text(
+          'CANCEL ORDER?',
+          style: AppTypography.headlineMedium(color: AppColors.onSurface),
+        ),
+        content: Text(
+          'Are you sure you want to cancel order $displayOrderNum? This action cannot be undone.',
+          style: AppTypography.bodyMedium(color: AppColors.onSurfaceVariant),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(
+              'NO, KEEP ORDER',
+              style: AppTypography.labelBold(color: AppColors.onSurfaceVariant),
+            ),
+          ),
+          NeoBrutalButton(
+            label: 'YES, CANCEL ORDER',
+            backgroundColor: AppColors.errorContainer,
+            textColor: AppColors.onErrorContainer,
+            onPressed: () async {
+              Navigator.pop(ctx);
+              final result = await appState.cancelShopifyOrder(order.id);
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: AppColors.onSecondaryFixed,
+                    content: Text(
+                      result['success'] == true
+                          ? 'ORDER $displayOrderNum HAS BEEN CANCELLED'
+                          : 'ORDER CANCELLED',
+                      style: AppTypography.labelBold(color: AppColors.onPrimary),
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildStitchOrderCard(BuildContext context, OrderModel order) {
     final isDelivered = order.status == OrderStatus.delivered;
+    final isCancelled = order.status == OrderStatus.cancelled;
+    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    final formattedDate = '${months[order.date.month - 1]} ${order.date.day}, ${order.date.year}';
+    final orderNum = order.trackingNumber.isNotEmpty
+        ? order.trackingNumber
+        : (order.id.startsWith('#') ? order.id : '#${order.id}');
+    final displayOrderNum = orderNum.startsWith('#') ? orderNum : '#$orderNum';
 
     return NeoBrutalContainer(
       backgroundColor: AppColors.surfaceContainerLowest,
@@ -62,11 +126,11 @@ class OrderHistoryScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'ORDER #${order.id}',
+                    'ORDER $displayOrderNum',
                     style: AppTypography.headlineMedium(color: AppColors.onSurface),
                   ),
                   Text(
-                    isDelivered ? 'Delivered: Sep 12, 2023' : 'Placed: Oct 24, 2023',
+                    isDelivered ? 'Delivered: $formattedDate' : (isCancelled ? 'Cancelled: $formattedDate' : 'Placed: $formattedDate'),
                     style: AppTypography.bodySmall(color: AppColors.onSurfaceVariant),
                   ),
                 ],
@@ -75,10 +139,10 @@ class OrderHistoryScreen extends StatelessWidget {
                 label: order.statusName.toUpperCase(),
                 backgroundColor: isDelivered
                     ? AppColors.surfaceVariant
-                    : AppColors.primaryContainer,
+                    : (isCancelled ? AppColors.errorContainer : AppColors.primaryContainer),
                 textColor: isDelivered
                     ? AppColors.onSurfaceVariant
-                    : AppColors.onPrimary,
+                    : (isCancelled ? AppColors.onErrorContainer : AppColors.onPrimary),
               ),
             ],
           ),
@@ -123,7 +187,7 @@ class OrderHistoryScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '\$${item.product.price.toStringAsFixed(2)}',
+                    '₱${item.product.price.toStringAsFixed(2)}',
                     style: AppTypography.headlineMedium(color: AppColors.onSurface)
                         .copyWith(fontSize: 16),
                   ),
@@ -135,7 +199,7 @@ class OrderHistoryScreen extends StatelessWidget {
           const SizedBox(height: 8),
 
           // Order summary breakdown box
-          if (!isDelivered) ...[
+          if (!isDelivered && !isCancelled) ...[
             NeoBrutalContainer(
               backgroundColor: AppColors.secondaryFixedDim,
               borderColor: AppColors.onSecondaryFixed,
@@ -143,11 +207,11 @@ class OrderHistoryScreen extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
-                  _summaryRow('Subtotal', '\$${order.subtotal.toStringAsFixed(2)}'),
-                  _summaryRow('Shipping', '\$${order.shippingFee.toStringAsFixed(2)}'),
-                  _summaryRow('Tax', '\$1.92'),
+                  _summaryRow('Subtotal', '₱${order.subtotal.toStringAsFixed(2)}'),
+                  _summaryRow('Shipping', '₱${order.shippingFee.toStringAsFixed(2)}'),
+                  _summaryRow('Tax', '₱1.92'),
                   const Divider(height: 12, color: AppColors.onSecondaryFixed),
-                  _summaryRow('Total', '\$${order.total.toStringAsFixed(2)}', isBold: true),
+                  _summaryRow('Total', '₱${order.total.toStringAsFixed(2)}', isBold: true),
                 ],
               ),
             ),
@@ -167,6 +231,19 @@ class OrderHistoryScreen extends StatelessWidget {
                   ),
                 );
               },
+            ),
+          ],
+
+          if (order.status == OrderStatus.pending) ...[
+            const SizedBox(height: 10),
+            NeoBrutalButton(
+              label: 'CANCEL ORDER',
+              icon: Icons.cancel_outlined,
+              backgroundColor: AppColors.errorContainer,
+              textColor: AppColors.onErrorContainer,
+              shadowColor: AppColors.onSecondaryFixed,
+              fullWidth: true,
+              onPressed: () => _showCancelDialog(context, order),
             ),
           ],
         ],

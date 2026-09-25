@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/models.dart';
 import '../services/api_service.dart';
 
 class AppState extends ChangeNotifier {
   AppState() {
     fetchProductsFromBackend();
+    loadSavedSession();
   }
 
   // Backend & Shopify State
@@ -24,30 +26,276 @@ class AppState extends ChangeNotifier {
   int get currentCustomerIndex => _currentCustomerIndex;
 
   void setCustomerIndex(int index) {
-    _currentCustomerIndex = index;
+    if (index < 0) {
+      _currentCustomerIndex = 0;
+    } else if (index > 3) {
+      _currentCustomerIndex = 3;
+    } else {
+      _currentCustomerIndex = index;
+    }
     notifyListeners();
   }
 
-  // Auth & Profile State
-  bool _isLoggedIn = true;
-  String _userName = 'Alex Vance';
-  String _userEmail = 'alex@stickercollector.io';
-  String _userPhone = '+1 555-0198';
+  // Auth & Profile State (Default unauthenticated guest mode)
+  bool _isLoggedIn = false;
+  String? _customerShopifyId;
+  String? _authError;
+  String _userName = '';
+  String _userEmail = '';
+  String _userPhone = '';
+  Map<String, String> _userAddress = {
+    'address1': '',
+    'address2': '',
+    'city': '',
+    'province': '',
+    'zip': '',
+    'country': 'Philippines',
+  };
+  List<OrderModel> _orders = [];
 
   bool get isLoggedIn => _isLoggedIn;
-  String get userName => _userName;
+  String? get customerShopifyId => _customerShopifyId;
+  String? get authError => _authError;
+  String get userName => _userName.isNotEmpty ? _userName : 'Guest Customer';
   String get userEmail => _userEmail;
   String get userPhone => _userPhone;
+  Map<String, String> get userAddress => Map.unmodifiable(_userAddress);
+  List<OrderModel> get orders {
+    final list = List<OrderModel>.from(_orders);
+    list.sort((a, b) => b.date.compareTo(a.date));
+    return List.unmodifiable(list);
+  }
+
+  String get formattedAddress {
+    final parts = [
+      _userAddress['address1'],
+      _userAddress['address2'],
+      _userAddress['city'],
+      _userAddress['province'],
+      _userAddress['zip'],
+      _userAddress['country'],
+    ].where((p) => p != null && p.trim().isNotEmpty).toList();
+    return parts.isEmpty ? 'No address set' : parts.join(', ');
+  }
+
+  /// Log in or register customer via Shopify backend proxy
+  Future<bool> loginWithShopify({
+    required String email,
+    String? password,
+    String? firstName,
+    String? lastName,
+    String? phone,
+    bool isSignUp = false,
+  }) async {
+    _authError = null;
+    notifyListeners();
+
+    try {
+      final res = await ApiService.authenticateShopifyCustomer(
+        email: email,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+        phone: phone,
+        domain: _currentShopDomain,
+        isSignUp: isSignUp,
+      );
+
+      if (res['success'] == true && res['data'] != null) {
+        final customerData = res['data'] as Map<String, dynamic>;
+        _isLoggedIn = true;
+        _customerShopifyId = customerData['shopify_id']?.toString();
+        _userEmail = customerData['email']?.toString() ?? email;
+        _userName = customerData['name']?.toString() ??
+            "${firstName ?? ''} ${lastName ?? ''}".trim();
+        if (_userName.isEmpty) {
+          _userName = _userEmail.split('@').first;
+        }
+        _userPhone = customerData['phone']?.toString() ?? phone ?? '';
+
+        if (customerData['default_address'] != null &&
+            customerData['default_address'] is Map) {
+          final addr = Map<String, dynamic>.from(customerData['default_address']);
+          _userAddress = {
+            'address1': addr['address1']?.toString() ?? '',
+            'address2': addr['address2']?.toString() ?? '',
+            'city': addr['city']?.toString() ?? '',
+            'province': addr['province']?.toString() ?? '',
+            'zip': addr['zip']?.toString() ?? '',
+            'country': addr['country']?.toString() ?? 'Philippines',
+          };
+        }
+
+        // Parse orders from Shopify
+        if (customerData['orders'] != null && customerData['orders'] is List) {
+          final List rawOrders = customerData['orders'];
+          _orders = rawOrders.map((o) {
+            final List rawItems = o['items'] is List ? o['items'] : [];
+            final itemsList = rawItems.map((i) {
+              return CartItem(
+                product: Product(
+                  id: i['id']?.toString() ?? 'p_1',
+                  title: i['title']?.toString() ?? 'Item',
+                  description: i['description']?.toString() ?? '',
+                  price: (i['price'] as num?)?.toDouble() ?? 0.0,
+                  category: i['category']?.toString() ?? 'Accessories',
+                  tag: '',
+                  imageUrl: i['imageUrl']?.toString() ?? '',
+                ),
+                quantity: (i['quantity'] as num?)?.toInt() ?? 1,
+                selectedVariant: i['selectedVariant']?.toString() ?? 'Standard',
+              );
+            }).toList();
+
+            final statusStr = (o['status']?.toString() ?? '').toLowerCase();
+            OrderStatus statusEnum = OrderStatus.delivered;
+            if (statusStr.contains('unfulfilled') || statusStr.contains('pending')) {
+              statusEnum = OrderStatus.pending;
+            } else if (statusStr.contains('partial') || statusStr.contains('processing')) {
+              statusEnum = OrderStatus.processing;
+            } else if (statusStr.contains('shipped') || statusStr.contains('in_transit')) {
+              statusEnum = OrderStatus.shipped;
+            }
+
+            return OrderModel(
+              id: o['id']?.toString() ??
+                  'ord_${DateTime.now().millisecondsSinceEpoch}',
+              date: DateTime.tryParse(o['date']?.toString() ?? '') ??
+                  DateTime.now(),
+              status: statusEnum,
+              paymentStatus: (o['payment_status']?.toString() ?? 'paid').toUpperCase(),
+              estimatedDelivery: o['estimated_delivery']?.toString() ?? '3-5 Business Days',
+              items: itemsList,
+              subtotal: (o['subtotal'] as num?)?.toDouble() ?? (o['total'] as num?)?.toDouble() ?? 0.0,
+              shippingFee: (o['shipping_fee'] as num?)?.toDouble() ?? 0.0,
+              total: (o['total'] as num?)?.toDouble() ?? 0.0,
+              shippingAddress: o['shipping_address']?.toString() ?? formattedAddress,
+              trackingNumber: o['order_number']?.toString() ?? o['tracking_number']?.toString() ?? '#1001',
+            );
+          }).toList();
+          _orders.sort((a, b) => b.date.compareTo(a.date));
+        }
+
+        await _saveSession();
+        notifyListeners();
+        return true;
+      } else {
+        _authError = res['message']?.toString() ?? 'Failed to authenticate customer account.';
+      }
+    } catch (e) {
+      _authError = 'Customer auth error: $e';
+    } finally {
+      notifyListeners();
+    }
+    return false;
+  }
+
+  /// Session Persistence Methods
+  Future<void> loadSavedSession() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final isLoggedIn = prefs.getBool('is_logged_in') ?? false;
+      final savedEmail = prefs.getString('user_email');
+
+      if (isLoggedIn && savedEmail != null && savedEmail.isNotEmpty) {
+        _isLoggedIn = true;
+        _userEmail = savedEmail;
+        _userName = prefs.getString('user_name') ?? '';
+        _userPhone = prefs.getString('user_phone') ?? '';
+        _customerShopifyId = prefs.getString('customer_shopify_id');
+        notifyListeners();
+
+        // Refresh latest customer profile and orders from backend
+        await loginWithShopify(email: savedEmail);
+      }
+    } catch (e) {
+      debugPrint('Error loading saved session: $e');
+    }
+  }
+
+  Future<void> _saveSession() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('is_logged_in', _isLoggedIn);
+      await prefs.setString('user_email', _userEmail);
+      await prefs.setString('user_name', _userName);
+      await prefs.setString('user_phone', _userPhone);
+      if (_customerShopifyId != null) {
+        await prefs.setString('customer_shopify_id', _customerShopifyId!);
+      }
+    } catch (e) {
+      debugPrint('Error saving session: $e');
+    }
+  }
+
+  Future<void> _clearSession() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('is_logged_in');
+      await prefs.remove('user_email');
+      await prefs.remove('user_name');
+      await prefs.remove('user_phone');
+      await prefs.remove('customer_shopify_id');
+    } catch (e) {
+      debugPrint('Error clearing session: $e');
+    }
+  }
+
+  /// Update shipping address and sync to Shopify
+  Future<bool> updateCustomerAddress({
+    required String address1,
+    String? address2,
+    required String city,
+    required String province,
+    required String zip,
+    String country = 'Philippines',
+  }) async {
+    _userAddress = {
+      'address1': address1,
+      'address2': address2 ?? '',
+      'city': city,
+      'province': province,
+      'zip': zip,
+      'country': country,
+    };
+    notifyListeners();
+
+    if (_userEmail.isNotEmpty) {
+      final updated = await ApiService.updateShopifyCustomerAddress(
+        email: _userEmail,
+        addressData: _userAddress,
+        domain: _currentShopDomain,
+      );
+      return updated != null;
+    }
+    return true;
+  }
 
   void login({String? name, String? email}) {
     _isLoggedIn = true;
     if (name != null && name.isNotEmpty) _userName = name;
     if (email != null && email.isNotEmpty) _userEmail = email;
+    _saveSession();
     notifyListeners();
   }
 
   void logout() {
     _isLoggedIn = false;
+    _customerShopifyId = null;
+    _userName = '';
+    _userEmail = '';
+    _userPhone = '';
+    _userAddress = {
+      'address1': '',
+      'address2': '',
+      'city': '',
+      'province': '',
+      'zip': '',
+      'country': 'Philippines',
+    };
+    _orders = [];
+    _cartItems.clear();
+    _clearSession();
     notifyListeners();
   }
 
@@ -55,6 +303,7 @@ class AppState extends ChangeNotifier {
     _userName = name;
     _userEmail = email;
     _userPhone = phone;
+    _saveSession();
     notifyListeners();
   }
 
@@ -164,68 +413,8 @@ class AppState extends ChangeNotifier {
     }).toList();
   }
 
-  // Wishlist
-  final Set<String> _wishlistProductIds = {'p1', 'p2', 'p4'};
-
-  Set<String> get wishlistProductIds => Set.unmodifiable(_wishlistProductIds);
-
-  List<Product> get wishlistProducts {
-    return _products.where((p) => _wishlistProductIds.contains(p.id)).toList();
-  }
-
-  void toggleWishlist(String productId) {
-    if (_wishlistProductIds.contains(productId)) {
-      _wishlistProductIds.remove(productId);
-    } else {
-      _wishlistProductIds.add(productId);
-    }
-    notifyListeners();
-  }
-
-  bool isWishlisted(String productId) => _wishlistProductIds.contains(productId);
-
-  // Stitch Scrapbook Cart Items
-  final List<CartItem> _cartItems = [
-    CartItem(
-      product: const Product(
-        id: 'p8',
-        title: 'Neon Sleeze Tee',
-        description: 'Faded black, oversized fit, distressed print.',
-        price: 45.00,
-        category: 'Apparel',
-        tag: 'Apparel',
-        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAOUZEA3XJ4qxo0B7ZxWRiIcQTGu49Mdx6cyWdMzf62sJkOux2orbN9JqNU-LvgIWtQXbqJ_ij8Q2G261Ly6Z7KNwrK3GyKv7XUi7pMbWdXHtJ1pLATj6abUuxzYDRjJjTz5O_WQNOe7wFi4Pmf5i4cVenUH1CBX-XM1cxhwxWWysKQoUD5uY6UXehjgr-o0O6RjA30dWB-VRmSv5YArgcBbyb7dRDlvDClygSXQ6khShfi0_Y2d5J4',
-      ),
-      quantity: 1,
-      selectedVariant: 'Size: L',
-    ),
-    CartItem(
-      product: const Product(
-        id: 'p9',
-        title: 'Padlock Chain',
-        description: 'Heavy stainless steel, industrial clasp.',
-        price: 85.00,
-        category: 'Accessories',
-        tag: 'Accessories',
-        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCU5I2likToMSg83qGYlJpCC5Rvjv8SZFKpULN4bxz8HoPHPBUz1Oa6ngbRmhxiLM384jllHUrMzaW_pK3IAdbEEXGbCw9a9WxfpLXZx_t_d0WUxK0bKU3BMGQNJn-D4ahNH8V_ljnmx_bR9lB9JNAlvrjWbwE7RfTJkVgawOhj6sAyw_jFR5AjJG321rHxNmf5izxjRleiORaZxgNTZjsqTkFb2G4TG4-d5lBuRvS5XJbz3oLcmn9G',
-      ),
-      quantity: 1,
-      selectedVariant: 'OS',
-    ),
-    CartItem(
-      product: const Product(
-        id: 'p10',
-        title: 'Remix Sticker Pack',
-        description: 'Holographic finish, 12 unique designs.',
-        price: 15.00,
-        category: 'Collectibles',
-        tag: 'Collectibles',
-        imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCjIKk84q9GKCp4xn4EZ14pBjqMT7AI9PESLXaE2CygRTPJhAlIasvDUrJrFesk1p7tXe8dzd8Zlemak_gSqtaM9uhPki_-kPBCXdWkBk9bJPZwnUrv2YT0x9E5VlV7JdgtzfFD0YHeTqVwU4tkEH26s-hNKH2oikavhl7VzPo3frkFzqlFd77q9zSonSVmtRBFDzEdofy2eKVje87TPFp19NMAAsEfucJW_6zGkbF4UIRdfMQpWYfP',
-      ),
-      quantity: 2,
-      selectedVariant: 'Pack',
-    ),
-  ];
+  // Cart Items
+  final List<CartItem> _cartItems = [];
 
   List<CartItem> get cartItems => List.unmodifiable(_cartItems);
 
@@ -234,21 +423,66 @@ class AppState extends ChangeNotifier {
 
   String? get appliedPromoCode => _appliedPromoCode;
 
-  void addToCart(Product product, {String variant = 'Standard', int quantity = 1}) {
+  bool addToCart(
+    Product product, {
+    String variant = 'Standard',
+    int quantity = 1,
+    ProductVariant? variantObj,
+  }) {
+    ProductVariant? targetVariant = variantObj;
+    if (targetVariant == null && product.productVariants.isNotEmpty) {
+      try {
+        targetVariant = product.productVariants.firstWhere(
+          (v) => v.title == variant ||
+              v.title == (variant == 'Default Variant' ? 'Default Title' : variant) ||
+              v.selectedOptions.containsValue(variant),
+        );
+      } catch (_) {
+        targetVariant = product.productVariants.first;
+      }
+    }
+
+    if (targetVariant != null) {
+      if (targetVariant.inventoryQuantity <= 0) {
+        return false;
+      }
+    } else {
+      if (!product.inStock || product.stockQuantity <= 0) {
+        return false;
+      }
+    }
+
+    final vId = targetVariant?.variantId ?? targetVariant?.id;
+    final vPrice = targetVariant?.price;
+    final vImg = targetVariant?.imageUrl;
+
     final existingIndex = _cartItems.indexWhere(
       (item) => item.product.id == product.id && item.selectedVariant == variant,
     );
 
     if (existingIndex >= 0) {
       _cartItems[existingIndex].quantity += quantity;
+      if (vId != null && vId.isNotEmpty) {
+        _cartItems[existingIndex].selectedVariantId = vId;
+      }
+      if (vPrice != null && vPrice > 0) {
+        _cartItems[existingIndex].variantPrice = vPrice;
+      }
+      if (vImg != null && vImg.isNotEmpty) {
+        _cartItems[existingIndex].variantImageUrl = vImg;
+      }
     } else {
       _cartItems.add(CartItem(
         product: product,
         quantity: quantity,
         selectedVariant: variant,
+        selectedVariantId: vId,
+        variantPrice: vPrice,
+        variantImageUrl: vImg,
       ));
     }
     notifyListeners();
+    return true;
   }
 
   void updateCartQuantity(int index, int delta) {
@@ -292,61 +526,8 @@ class AppState extends ChangeNotifier {
 
   double get cartTotal => cartSubtotal - cartDiscount + cartTaxes;
 
-  // Stitch Order Models
-  final List<OrderModel> _orders = [
-    OrderModel(
-      id: 'OW-9021',
-      date: DateTime.now().subtract(const Duration(days: 1)),
-      status: OrderStatus.shipped,
-      items: [
-        CartItem(
-          product: const Product(
-            id: 'p_bead',
-            title: 'Custom Blue Beaded Keychain',
-            description: '',
-            price: 24.00,
-            category: 'Accessories',
-            tag: '',
-            imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuChksUQNXwz-dIEcpwjFmhwBthA7k9dAYePHT1LZILinos_KNaT2E_WlBj8zeE0wDnJHnWXpKL8SRUKKurOett7PuVn5TLTduO7AV2xGIUKGfUTbNIQokHJTgYIc_yr17o1r-HG-udCzml2Pi3fj9KqTkXiLZA3QOqq3kvPY4039oqITNYIeM5p7tGlfR9W_LNvImgJi46Dh5baPgVnUEBLB6SPS90TrmqwcNtTCFXuFUwQavEkKps0',
-          ),
-          quantity: 1,
-        ),
-      ],
-      subtotal: 24.00,
-      shippingFee: 5.00,
-      total: 30.92,
-      shippingAddress: '104 Retro Pop Ave, Studio 4B, New York, NY',
-      trackingNumber: 'OWX-99482710-US',
-    ),
-    OrderModel(
-      id: 'OW-8711',
-      date: DateTime.now().subtract(const Duration(days: 30)),
-      status: OrderStatus.delivered,
-      items: [
-        CartItem(
-          product: const Product(
-            id: 'p8',
-            title: 'Oversized Graphic Tee',
-            description: '',
-            price: 45.00,
-            category: 'Apparel',
-            tag: '',
-            imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAl4-gHHNaz2kX9azm-BsDUSwC0Di-JuCGe2R-6zOhV55ljce4epqUe9USzXLAoeM1bbHBIYIa2JVPiHJYAKjiRwc7is8JHiZ9jBZierOuV9OQKIRMVVWm21JcViL1qm2fN79icmzwOHKqdissn48aWxJzB4v7SlAE6rWCP_JexdXeU0oCvfwgrzm0q7oXhT-0rCP0oqYiBHL_mmD6oRVpscV25YJOS2Si3SCAXl8ZGydesk4QKl3wQ',
-          ),
-          quantity: 1,
-        ),
-      ],
-      subtotal: 45.00,
-      shippingFee: 0.0,
-      total: 45.00,
-      shippingAddress: '104 Retro Pop Ave, Studio 4B, New York, NY',
-      trackingNumber: 'OWX-77218394-US',
-    ),
-  ];
-
-  List<OrderModel> get orders => List.unmodifiable(_orders);
-
-  OrderModel? get selectedOrder => _orders.firstWhere((o) => o.id == 'OW-9021', orElse: () => _orders.first);
+  OrderModel? get selectedOrder =>
+      _orders.isEmpty ? null : _orders.firstWhere((o) => o.id == 'OW-9021', orElse: () => _orders.first);
 
   void checkoutCurrentCart(String address) {
     if (_cartItems.isEmpty) return;
@@ -387,5 +568,177 @@ class AppState extends ChangeNotifier {
     }
   }
 
+  /// Place order directly on Shopify via backend proxy
+  Future<Map<String, dynamic>> placeShopifyOrder({
+    required String name,
+    required String address1,
+    String? address2,
+    required String city,
+    required String province,
+    required String zip,
+    String country = 'Philippines',
+    String paymentMethod = 'Cash on Delivery',
+    String deliveryMethod = 'Shipping',
+  }) async {
+    if (_cartItems.isEmpty) {
+      return {'success': false, 'message': 'Cart is empty.'};
+    }
 
+    final itemsPayload = _cartItems.map((item) {
+      return {
+        'id': item.product.id,
+        'variant_id': item.selectedVariantId,
+        'title': item.product.title,
+        'price': item.unitPrice,
+        'quantity': item.quantity,
+        'selectedVariant': item.selectedVariant,
+      };
+    }).toList();
+
+    final shippingAddressPayload = {
+      'name': name,
+      'address1': address1,
+      'address2': address2 ?? '',
+      'city': city,
+      'province': province,
+      'zip': zip,
+      'country': country,
+    };
+
+    final result = await ApiService.createShopifyOrder(
+      email: _userEmail,
+      items: itemsPayload,
+      shippingAddress: shippingAddressPayload,
+      paymentMethod: paymentMethod,
+      deliveryMethod: deliveryMethod,
+      domain: _currentShopDomain,
+    );
+
+    if (result['success'] == true) {
+      if (result['customer'] != null && result['customer'] is Map) {
+        final cust = Map<String, dynamic>.from(result['customer']);
+        if (cust['orders'] != null && cust['orders'] is List) {
+          final List rawOrders = cust['orders'];
+          _orders = rawOrders.map((o) {
+            final List rawItems = o['items'] is List ? o['items'] : [];
+            final itemsList = rawItems.map((i) {
+              return CartItem(
+                product: Product(
+                  id: i['id']?.toString() ?? 'p_1',
+                  title: i['title']?.toString() ?? 'Item',
+                  description: i['description']?.toString() ?? '',
+                  price: (i['price'] as num?)?.toDouble() ?? 0.0,
+                  category: i['category']?.toString() ?? 'Accessories',
+                  tag: '',
+                  imageUrl: i['imageUrl']?.toString() ?? '',
+                ),
+                quantity: (i['quantity'] as num?)?.toInt() ?? 1,
+                selectedVariant: i['selectedVariant']?.toString() ?? 'Standard',
+              );
+            }).toList();
+
+            final statusStr = (o['status']?.toString() ?? '').toLowerCase();
+            OrderStatus statusEnum = OrderStatus.delivered;
+            if (statusStr.contains('unfulfilled') || statusStr.contains('pending')) {
+              statusEnum = OrderStatus.pending;
+            } else if (statusStr.contains('partial') || statusStr.contains('processing')) {
+              statusEnum = OrderStatus.processing;
+            } else if (statusStr.contains('shipped') || statusStr.contains('in_transit')) {
+              statusEnum = OrderStatus.shipped;
+            }
+
+            return OrderModel(
+              id: o['id']?.toString() ?? 'ord_${DateTime.now().millisecondsSinceEpoch}',
+              date: DateTime.tryParse(o['date']?.toString() ?? '') ?? DateTime.now(),
+              status: statusEnum,
+              paymentStatus: (o['payment_status']?.toString() ?? 'paid').toUpperCase(),
+              estimatedDelivery: o['estimated_delivery']?.toString() ?? '3-5 Business Days',
+              items: itemsList,
+              subtotal: (o['subtotal'] as num?)?.toDouble() ?? (o['total'] as num?)?.toDouble() ?? 0.0,
+              shippingFee: (o['shipping_fee'] as num?)?.toDouble() ?? 0.0,
+              total: (o['total'] as num?)?.toDouble() ?? 0.0,
+              shippingAddress: o['shipping_address']?.toString() ?? '$address1, $city',
+              trackingNumber: o['order_number']?.toString() ?? o['tracking_number']?.toString() ?? '#1001',
+            );
+          }).toList();
+          _orders.sort((a, b) => b.date.compareTo(a.date));
+        }
+      } else {
+        final fullAddress = '$address1, $city $zip';
+        checkoutCurrentCart(fullAddress);
+      }
+
+      _cartItems.clear();
+      notifyListeners();
+    }
+
+    return result;
+  }
+
+  /// Request cancellation for an order
+  Future<Map<String, dynamic>> cancelShopifyOrder(String orderId) async {
+    // Optimistically update status locally
+    updateOrderStatus(orderId, OrderStatus.cancelled);
+
+    final result = await ApiService.cancelShopifyOrder(
+      orderId: orderId,
+      email: _userEmail,
+      domain: _currentShopDomain,
+    );
+
+    if (result['success'] == true && result['customer'] != null && result['customer'] is Map) {
+      final cust = Map<String, dynamic>.from(result['customer']);
+      if (cust['orders'] != null && cust['orders'] is List) {
+        final List rawOrders = cust['orders'];
+        _orders = rawOrders.map((o) {
+          final List rawItems = o['items'] is List ? o['items'] : [];
+          final itemsList = rawItems.map((i) {
+            return CartItem(
+              product: Product(
+                id: i['id']?.toString() ?? 'p_1',
+                title: i['title']?.toString() ?? 'Item',
+                description: i['description']?.toString() ?? '',
+                price: (i['price'] as num?)?.toDouble() ?? 0.0,
+                category: i['category']?.toString() ?? 'Accessories',
+                tag: '',
+                imageUrl: i['imageUrl']?.toString() ?? '',
+              ),
+              quantity: (i['quantity'] as num?)?.toInt() ?? 1,
+              selectedVariant: i['selectedVariant']?.toString() ?? 'Standard',
+            );
+          }).toList();
+
+          final statusStr = (o['status']?.toString() ?? '').toLowerCase();
+          OrderStatus statusEnum = OrderStatus.delivered;
+          if (statusStr.contains('cancel')) {
+            statusEnum = OrderStatus.cancelled;
+          } else if (statusStr.contains('unfulfilled') || statusStr.contains('pending')) {
+            statusEnum = OrderStatus.pending;
+          } else if (statusStr.contains('partial') || statusStr.contains('processing')) {
+            statusEnum = OrderStatus.processing;
+          } else if (statusStr.contains('shipped') || statusStr.contains('in_transit')) {
+            statusEnum = OrderStatus.shipped;
+          }
+
+          return OrderModel(
+            id: o['id']?.toString() ?? 'ord_${DateTime.now().millisecondsSinceEpoch}',
+            date: DateTime.tryParse(o['date']?.toString() ?? '') ?? DateTime.now(),
+            status: statusEnum,
+            paymentStatus: (o['payment_status']?.toString() ?? 'paid').toUpperCase(),
+            estimatedDelivery: o['estimated_delivery']?.toString() ?? '3-5 Business Days',
+            items: itemsList,
+            subtotal: (o['subtotal'] as num?)?.toDouble() ?? (o['total'] as num?)?.toDouble() ?? 0.0,
+            shippingFee: (o['shipping_fee'] as num?)?.toDouble() ?? 0.0,
+            total: (o['total'] as num?)?.toDouble() ?? 0.0,
+            shippingAddress: o['shipping_address']?.toString() ?? formattedAddress,
+            trackingNumber: o['order_number']?.toString() ?? o['tracking_number']?.toString() ?? '#1001',
+          );
+        }).toList();
+        _orders.sort((a, b) => b.date.compareTo(a.date));
+      }
+    }
+
+    notifyListeners();
+    return result;
+  }
 }

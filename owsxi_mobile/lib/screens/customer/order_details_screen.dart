@@ -1,16 +1,83 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
 import '../../core/widgets/neo_brutal_widgets.dart';
 import '../../models/models.dart';
+import '../../providers/app_state.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   final OrderModel order;
 
   const OrderDetailsScreen({super.key, required this.order});
 
+  void _showCancelDialog(BuildContext context) {
+    final appState = Provider.of<AppState>(context, listen: false);
+    final orderNum = order.trackingNumber.isNotEmpty
+        ? order.trackingNumber
+        : (order.id.startsWith('#') ? order.id : '#${order.id}');
+    final displayOrderNum = orderNum.startsWith('#') ? orderNum : '#$orderNum';
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppColors.background,
+        shape: const RoundedRectangleBorder(
+          side: BorderSide(color: AppColors.onSecondaryFixed, width: 3),
+        ),
+        title: Text(
+          'CANCEL ORDER?',
+          style: AppTypography.headlineMedium(color: AppColors.onSurface),
+        ),
+        content: Text(
+          'Are you sure you want to cancel order $displayOrderNum? This action cannot be undone.',
+          style: AppTypography.bodyMedium(color: AppColors.onSurfaceVariant),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(
+              'NO, KEEP ORDER',
+              style: AppTypography.labelBold(color: AppColors.onSurfaceVariant),
+            ),
+          ),
+          NeoBrutalButton(
+            label: 'YES, CANCEL ORDER',
+            backgroundColor: AppColors.errorContainer,
+            textColor: AppColors.onErrorContainer,
+            onPressed: () async {
+              Navigator.pop(ctx);
+              final result = await appState.cancelShopifyOrder(order.id);
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: AppColors.onSecondaryFixed,
+                    content: Text(
+                      result['success'] == true
+                          ? 'ORDER $displayOrderNum HAS BEEN CANCELLED'
+                          : 'ORDER CANCELLED',
+                      style: AppTypography.labelBold(color: AppColors.onPrimary),
+                    ),
+                  ),
+                );
+                Navigator.pop(context);
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    final formattedDate = '${months[order.date.month - 1]} ${order.date.day}, ${order.date.year}';
+    final orderNum = order.trackingNumber.isNotEmpty
+        ? order.trackingNumber
+        : (order.id.startsWith('#') ? order.id : '#${order.id}');
+    final displayOrderNum = orderNum.startsWith('#') ? orderNum : '#$orderNum';
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -22,7 +89,7 @@ class OrderDetailsScreen extends StatelessWidget {
           child: Container(color: AppColors.onSecondaryFixed, height: 4),
         ),
         title: Text(
-          'ORDER DETAILS ${order.id}',
+          'ORDER DETAILS $displayOrderNum',
           style: AppTypography.headlineMedium(color: AppColors.onSurface),
         ),
       ),
@@ -46,14 +113,18 @@ class OrderDetailsScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        order.id,
+                        displayOrderNum,
                         style: AppTypography.displayLarge(color: AppColors.onPrimary)
                             .copyWith(fontSize: 28),
                       ),
                       NeoBrutalBadge(
-                        label: order.statusName,
-                        backgroundColor: AppColors.tertiaryFixed,
-                        textColor: AppColors.onTertiaryFixed,
+                        label: order.statusName.toUpperCase(),
+                        backgroundColor: order.status == OrderStatus.cancelled
+                            ? AppColors.errorContainer
+                            : AppColors.tertiaryFixed,
+                        textColor: order.status == OrderStatus.cancelled
+                            ? AppColors.onErrorContainer
+                            : AppColors.onTertiaryFixed,
                       ),
                     ],
                   ),
@@ -76,10 +147,10 @@ class OrderDetailsScreen extends StatelessWidget {
               style: AppTypography.headlineMedium(color: AppColors.onSurface),
             ),
             const SizedBox(height: 14),
-            _timelineStep('Order Confirmed & Payment Verified', 'Aug 10 - 09:14 AM', true),
-            _timelineStep('Packaged with Custom Owsxi Stickers', 'Aug 10 - 02:30 PM', true),
-            _timelineStep('Dispatched via Courier (In Transit)', 'Aug 11 - 10:00 AM', true),
-            _timelineStep('Out for Local Delivery', 'Expected Aug 13', false),
+            _timelineStep('Order Confirmed & Payment Verified', formattedDate, true),
+            _timelineStep('Packaged with Custom Owsxi Stickers', formattedDate, true),
+            _timelineStep('Dispatched via Courier', formattedDate, order.status == OrderStatus.shipped || order.status == OrderStatus.delivered),
+            _timelineStep('Out for Local Delivery', order.status == OrderStatus.delivered ? formattedDate : 'Pending', order.status == OrderStatus.delivered),
 
             const SizedBox(height: 28),
 
@@ -125,7 +196,7 @@ class OrderDetailsScreen extends StatelessWidget {
                               style: AppTypography.labelBold(color: AppColors.onSurface),
                             ),
                             Text(
-                              'Qty: ${item.quantity}  •  \$${item.product.price.toStringAsFixed(2)}',
+                              'Qty: ${item.quantity}  •  ₱${item.product.price.toStringAsFixed(2)}',
                               style: AppTypography.bodySmall(
                                 color: AppColors.onSurfaceVariant,
                               ),
@@ -163,6 +234,19 @@ class OrderDetailsScreen extends StatelessWidget {
                 ],
               ),
             ),
+
+            if (order.status == OrderStatus.pending) ...[
+              const SizedBox(height: 16),
+              NeoBrutalButton(
+                label: 'CANCEL ORDER',
+                icon: Icons.cancel_outlined,
+                backgroundColor: AppColors.errorContainer,
+                textColor: AppColors.onErrorContainer,
+                shadowColor: AppColors.onSecondaryFixed,
+                fullWidth: true,
+                onPressed: () => _showCancelDialog(context),
+              ),
+            ],
 
             const SizedBox(height: 32),
           ],
